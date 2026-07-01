@@ -1,0 +1,91 @@
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f7fb;
+}
+
+.signup-container{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.signup-card{
+
+    width:400px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+}
+
+.signup-card h1{
+
+    color:#7d0606;
+    text-align:center;
+
+}
+
+.signup-cardh2{
+
+    text-align:center;
+
+}
+
+.signup-card p{
+
+    text-align:center;
+
+}
+
+.signup-card form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.signup-cardinput{
+
+    padding:14px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+}
+
+.signup-card button{
+
+    padding:15px;
+
+    border:none;
+
+    background:#7d0606;
+
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+}
+
+.signup-card button:hover{
+
+    background:#7d0606;
+
+}
