@@ -31,29 +31,29 @@ function Navbar() {
 
       <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
 
-        <li>
-          <Link to="/" onClick={() => setMenuOpen(false)}>
-            Home
-          </Link>
-        </li>
+       <li>
+  <a href="#home" onClick={() => setMenuOpen(false)}>
+    Home
+  </a>
+</li>
 
-        <li>
-          <Link to="/services" onClick={() => setMenuOpen(false)}>
-            Services
-          </Link>
-        </li>
+       <li>
+  <a href="#services" onClick={() => setMenuOpen(false)}>
+    Services
+  </a>
+</li>
 
-        <li>
-          <Link to="/about" onClick={() => setMenuOpen(false)}>
-            About
-          </Link>
-        </li>
+<li>
+  <a href="#about" onClick={() => setMenuOpen(false)}>
+    About
+  </a>
+</li>
 
-        <li>
-          <Link to="/contact" onClick={() => setMenuOpen(false)}>
-            Contact
-          </Link>
-        </li>
+<li>
+  <a href="#contact" onClick={() => setMenuOpen(false)}>
+    Contact
+  </a>
+</li>
 
         <div className="mobile-buttons">
           <Link

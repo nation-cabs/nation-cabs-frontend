@@ -14,7 +14,7 @@ import companyImage from "../assets/img6.jpeg";
 function About() {
   return (
     <>
-   <section id="about" className="about-section">
+   <section id="about" className="about">
       <section className="our-story">
 
         <div className="story-image">

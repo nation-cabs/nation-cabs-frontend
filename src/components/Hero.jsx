@@ -48,7 +48,7 @@ function Hero() {
   }, [text, isDeleting, wordIndex]);
 
   return (
-    <section id="hero" className="hero">
+    <section id="home" className="hero">
 
       <div className="hero-overlay">
 
