@@ -1,0 +1,31 @@
+.contact {
+  background-color: #f9f9f9;
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.contact h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.contact p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.contact a {
+  color: #962a2a;
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}
+
+.contact-icon{
+    font-size: 1.3rem;
+    color: #962a2a;
+}

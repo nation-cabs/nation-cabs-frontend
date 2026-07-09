@@ -17,9 +17,37 @@
 }
 
 .logo{
+    display:flex;
+    align-items:center;
+}
+
+.logo-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+}
+
+.logo-image{
+    width:68px;
+    height:68px;
+    object-fit:contain;
+}
+
+.logo-text{
     font-size:28px;
-    font-weight:bold;
+    font-weight:700;
     color:#7d0606;
+}
+
+.logo-link:hover .logo-image{
+    transform:rotate(-5deg) scale(1.05);
+    transition:0.3s ease;
+}
+
+.logo-link:hover .logo-text{
+    color:#a10808;
+    transition:0.3s ease;
 }
 
 .nav-links{

@@ -1,70 +1,60 @@
 import "../styles/WhyChooseUs.css";
-import { FaUserShield, FaMapMarkedAlt, FaMoneyBillWave, FaClock , FaShieldAlt, FaLock} from "react-icons/fa";
 
 function WhyChooseUs() {
+  return (
+    <section className="why-section">
+ <div className="why-list">
 
-    const features = [
-        {
-            icon: <FaUserShield />,
-            title: "Verified Drivers",
-            text: "All drivers are verified and professionally trained."
-        },
-        {
-            icon: <FaMapMarkedAlt />,
-            title: "Reliable Pickups",
-            text: "Fast pickups and scheduled transport services."
-        },
-        {
-            icon: <FaMoneyBillWave />,
-            title: "Affordable Prices",
-            text: "Transparent pricing with no hidden costs."
-        },
-        {
-            icon: <FaClock />,
-            title: "24/7 Support",
-            text: "Customer support whenever you need assistance."
-        },
-         {
-            icon: <FaShieldAlt />,
-            title: "Safe Rides",
-            text: "Safety is our top priority with real-time tracking "
-        },
-         {
-            icon: <FaLock/>,
-            title: "Secure Payments",
-            text: "Multiple payment options with secure transactions."
-        }
-    ];
+  <div className="why-item">
 
-    return (
+    <p className="why-label">
+      WHY CHOOSE NATION CABS
+    </p>
 
-        <section className="why">
+    <h3>Professional & Verified Drivers</h3>
 
-            <h2>Why Choose Nation Cabs?</h2>
+    <p>
+      Every driver is carefully vetted, licensed, and committed
+      to providing a safe and professional travel experience.
+    </p>
 
-            <div className="why-grid">
+  </div>
 
-                {features.map((feature,index)=>(
+  <div className="why-item">
 
-                    <div className="why-card" key={index}>
+    <p className="why-label">
+      RELIABLE SERVICE
+    </p>
 
-                        <div className="icon">
-                            {feature.icon}
-                        </div>
+    <h3>Always On Time</h3>
 
-                        <h3>{feature.title}</h3>
+    <p>
+      Whether you're travelling to the airport, work, or home,
+      we strive to arrive promptly and get you there safely.
+    </p>
 
-                        <p>{feature.text}</p>
+  </div>
 
-                    </div>
+  <div className="why-item">
 
-                ))}
+    <p className="why-label">
+      CUSTOMER FIRST
+    </p>
 
-            </div>
+    <h3>Affordable & Transparent Pricing</h3>
 
-        </section>
+    <p>
+      No hidden charges. Know your fare upfront and enjoy
+      excellent value for every journey.
+    </p>
 
-    );
+  </div>
+
+    
+      </div>
+
+    </section>
+  );
 }
 
 export default WhyChooseUs;

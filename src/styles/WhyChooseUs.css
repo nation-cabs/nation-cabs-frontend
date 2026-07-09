@@ -1,48 +1,139 @@
-.why{
-    padding:80px 8%;
-    background:#fff;
+.why-section{
+
+    padding:90px 8%;
+
+    background:#ffffff;
+
 }
 
-.why h2{
-    text-align:center;
-    margin-bottom:50px;
-    color:#7d0606;
-}
-
-.why-grid{
+.why-container{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:1fr 1fr;
+
+    gap:40px;
+
+    align-items:left;
+
+}
+
+.why-list{
+
+    display:flex;
+
+    flex-direction:column;
 
     gap:30px;
+
 }
 
-.why-card{
+.why-item{
 
-    background:white;
+    position: relative;
 
-    padding:35px;
+    background: #FDF2F5;
 
-    border-radius:12px;
+    border-radius: 22px;
 
-    text-align:center;
+    padding: 35px 40px;
 
-    box-shadow:0 3px 15px rgba(0,0,0,.08);
+    overflow: hidden;
 
-    transition:.3s;
+    border: 1px solid #F1D8E0;
+
+    transition: all .35s ease;
+
+    /* Align everything to the left */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
 }
 
-.why-card:hover{
+/* Left Accent */
 
-    transform:translateY(-8px);
+.why-item::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    width:8px;
+
+    background:#7d0606;
+
 }
 
-.icon{
+/* Small Label */
 
-    font-size:40px;
+.why-label{
 
     color:#7d0606;
 
-    margin-bottom:20px;
+    font-size:13px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    margin-bottom:12px;
+      width: 100%;
+    text-align: left;
+
+}
+
+/* Heading */
+
+.why-item h3{
+
+    font-size:20px;
+
+    color:#1F2937;
+
+    margin-bottom:15px;
+
+    font-weight:700;
+     width: 100%;
+    text-align: left;
+    margin: 0 0 15px 0;
+}
+
+/* Description */
+
+.why-item p:last-child{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#5B6473;
+
+}
+
+.why-item p{
+    width: 100%;
+    text-align: left;
+    margin: 0;
+}
+
+/* Hover */
+
+.why-item:hover{
+
+    transform:translateX(12px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    background:#fff;
+
 }
