@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/Hero.css";
 import { Link } from "react-router-dom";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 function Hero() {
    const words = ["Safe", "Reliable", "Affordable"];
@@ -59,7 +60,7 @@ function Hero() {
 
             <span className="transport"> Transport</span>
 
-</h1>
+            </h1>
 
           <p>
             Book city rides, airport transfers, chauffeur services,
@@ -85,7 +86,7 @@ function Hero() {
             <div> Secure Payments</div>
 
           </div>
-
+        
         </div>
 
       </div>
