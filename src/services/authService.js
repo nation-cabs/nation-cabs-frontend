@@ -1,58 +1,26 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_API,
-  headers: {
-    "Content-Type": "application/json",
-  },
+const API = import.meta.env.VITE_API;
 
-});
-
+// Register
 export const signupUser = async (userData) => {
 
-  
-const response = await API.post(`/auth/signup`, 
-  {
-   headers: {
-    'Content-Type': 'application/json',
-           'Authorization': `Bearer ${response.token}` 
+    const response = await axios.post(
+        `${API}/auth/signup`,
+        userData
+    );
 
- },
- } , userData);
-  return response.data;
+    return response.data;
+};
 
-  
-}
+// Login
+export const loginUser = async (credentials) => {
 
-export const loginUser = async (userData) => {
+    const response = await axios.post(
+        `${API}/auth/login`,
+        credentials
+    );
 
-  try{
-  const response = await API.post(`/auth/login`, {
-    headers: {
-      'Content-Type': 'application/json',
-  'Authorization' : `Bearer ${response.token}`,
-  },
- } , userData)
-  ;
-  return response.data;
-} catch(error) {
-    console.error('Cannot log you in', error.message)
-}
-
-}
-
-export const logoutUser =  () => {
-
-localStorage.removeItem("token");
-
-}
-
-export const createToken =  (user) => {
-
-    localStorage.setItem("token", user.token);
-}
-
-export const getToken =  () => {
-    return localStorage.getItem("token");
-}
+    return response.data;
+};
 

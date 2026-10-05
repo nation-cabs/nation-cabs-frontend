@@ -71,6 +71,14 @@ function Navbar() {
           >
             Register
           </Link>
+
+           <Link
+            to="/logout"
+            className="logout-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Logout
+          </Link>
         </div>
 
       </ul>
@@ -81,7 +89,11 @@ function Navbar() {
         </Link>
 
         <Link to="/signup" className="register-btn">
-          Register
+          Sign Up
+        </Link>
+
+        <Link to="/logout" className="logout-btn">
+          Logout
         </Link>
       </div>
 

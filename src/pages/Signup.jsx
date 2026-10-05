@@ -1,12 +1,14 @@
 import { useState} from "react";
 import { Link } from "react-router-dom";
 import "../styles/Signup.css";
-import {createToken, signupUser} from "../services/authService.js"
-import axios from 'axios'
+import {signupUser} from "../services/authService.js"
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 
 function Signup() {
    const  API = import.meta.env.VITE_API
+   const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
 
@@ -32,15 +34,30 @@ function Signup() {
 
     };
 
-    const handleSubmit=(e)=>{
+    const [error, setError] = useState("");
 
-        e.preventDefault();
+    const handleSubmit = async (e) => {
 
-        console.log(formData);
+    e.preventDefault();
 
+    setError("");
 
-    };
+    try {
 
+        const response = await signupUser(formData);
+
+        navigate("/login");
+
+    } catch (err) {
+
+        setError(
+            err.response?.data?.message ||
+            "Registration failed."
+        );
+
+    }
+
+};
 
 
     return(
@@ -50,6 +67,8 @@ function Signup() {
             <div className="signup-card">
 
                 <h1>Create Account</h1>
+
+{error && <p className="error-message">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
 

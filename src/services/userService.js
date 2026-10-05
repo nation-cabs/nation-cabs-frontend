@@ -1,18 +1,28 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_API,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import { getToken } from "../utils/auth";
+
+const API = import.meta.env.VITE_API;
 
 export const getProfile = async () => {
-    const response  = await API.get(`/user/profile`, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-    });
+
+    const response = await axios.get(
+
+        `${API}/users/profile`,
+
+        {
+
+            headers: {
+
+                Authorization: `Bearer ${getToken()}`
+
+            }
+
+        }
+
+    );
+
     return response.data;
-}
+
+};
 

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Login.css";
+import { loginUser} from "../services/authService.js";
+import { useNavigate } from "react-router-dom";
+import { saveToken, saveUser } from "../utils/auth.js";
 
 function Login() {
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -18,15 +22,55 @@ function Login() {
 
     };
 
-    const handleSubmit = (e) => {
+    const [error, setError] = useState("");
 
-        e.preventDefault();
+  const handleSubmit = async (e) => {
 
-        console.log(formData);
+    e.preventDefault();
 
-        
+    setError("");
 
-    };
+    try {
+
+        const data = await loginUser(formData);
+
+        saveToken(data.token);
+        saveUser(data.user);
+
+        switch (data.user.role) {
+
+            case "customer":
+                navigate("/user-dashboard");
+                break;
+
+            case "driver":
+                navigate("/driver-dashboard");
+                break;
+
+            case "admin":
+                navigate("/admin-dashboard");
+                break;
+
+                 case "hr":
+                navigate("/hr-dashboard");
+                break;
+
+            default:
+                navigate("/");
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        setError(
+            err.response?.data?.message ||
+            "Login failed."
+        );
+
+    }
+
+};
 
     return (
 
@@ -34,11 +78,14 @@ function Login() {
 
             <div className="login-card">
 
+
                 <h1>Nation Cabs</h1>
 
                 <h2>Welcome Back</h2>
 
                 <p>Sign in to continue.</p>
+
+                {error && <p className="error-message">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
 

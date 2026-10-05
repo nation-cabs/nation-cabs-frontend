@@ -72,9 +72,9 @@ function Hero() {
               Book a Ride
             </Link>
 
-            <Link to="/signup" className="driver-btn">
-              Become a Driver
-            </Link>
+           <Link to="/driver-application" className="driver-btn">
+               Become a Driver
+          </Link>
           </div>
 
           <div className="hero-features">

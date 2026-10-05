@@ -98,6 +98,21 @@
 
     border-radius:5px;
 }
+
+.logout-btn{
+    padding:10px 20px;
+
+    border:none;
+
+    background:#7d0606;
+
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:5px;
+}
+
 .logo-link{
     text-decoration:none;
     color:#962a2a;
