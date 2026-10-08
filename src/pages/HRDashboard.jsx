@@ -157,6 +157,7 @@ const HRDashboard = () => {
 
                         <div className="dashboard-stats">
 
+<<<<<<< HEAD
                             <div className="stat-card new">
                                 <h3>New Applications</h3>
                                 <p>{applications.length}</p>
@@ -178,6 +179,23 @@ const HRDashboard = () => {
                         </div>
 
                     </div>
+=======
+                            <div className="stat-card">
+                                <h3>New Applications</h3>
+                                <p>
+                                    {applications.length}
+                                </p>
+                            </div>
+
+                            <div className="stat-card">
+                                <h3>Pending Review</h3>
+                                <p>
+                                    {applications.length}
+                                </p>
+                            </div>
+
+                        </div>
+>>>>>>> d6d8b9cfb419e9dfd4bb9b3e4aff61b43a61fd99
                     </>
                 )}
 
