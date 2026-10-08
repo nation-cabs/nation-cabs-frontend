@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import "../styles/Navbar.css";
+import logo from "../assets/img6.jpeg";
+
+function Navbar() {
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <nav className="navbar">
+
+      <div className="logo">
+
+    <Link to="/" className="logo-link">
+
+        <img
+            src={logo}
+            alt="Nation Cabs Logo"
+            className="logo-image"
+        />
+
+        <span className="logo-text">
+            Nation Cabs
+        </span>
+
+    </Link>
+
+</div>
+
+      <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
+
+       <li>
+  <a href="#home" onClick={() => setMenuOpen(false)}>
+    Home
+  </a>
+</li>
+
+       <li>
+  <a href="#services" onClick={() => setMenuOpen(false)}>
+    Services
+  </a>
+</li>
+
+<li>
+  <a href="#about" onClick={() => setMenuOpen(false)}>
+    About
+  </a>
+</li>
+
+<li>
+  <a href="#contact" onClick={() => setMenuOpen(false)}>
+    Contact
+  </a>
+</li>
+
+        <div className="mobile-buttons">
+          <Link
+            to="/login"
+            className="login-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Login
+          </Link>
+
+          <Link
+            to="/signup"
+            className="register-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Register
+          </Link>
+
+           <Link
+            to="/logout"
+            className="logout-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Logout
+          </Link>
+        </div>
+
+      </ul>
+
+      <div className="nav-buttons">
+        <Link to="/login" className="login-btn">
+          Login
+        </Link>
+
+        <Link to="/signup" className="register-btn">
+          Sign Up
+        </Link>
+
+        <Link to="/logout" className="logout-btn">
+          Logout
+        </Link>
+      </div>
+
+      <div
+        className="menu-icon"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </div>
+
+    </nav>
+  );
+}
+
+export default Navbar;

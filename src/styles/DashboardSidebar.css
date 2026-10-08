@@ -1,0 +1,158 @@
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:260px;
+    min-height:100vh;
+    background:#7d0606;
+    color:#fff;
+    position:fixed;
+    left:0;
+    top:0;
+    padding:35px 20px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:2px 0 15px rgba(0,0,0,.1);
+}
+
+.sidebar h2{
+    text-align:center;
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:40px;
+    letter-spacing:1px;
+}
+
+/* ================= MENU ================= */
+
+.sidebar ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.sidebar li{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:all .3s ease;
+    font-size:16px;
+    font-weight:500;
+}
+
+.sidebar li svg{
+    font-size:20px;
+}
+
+.sidebar li:hover{
+    background:rgba(255,255,255,.18);
+    transform:translateX(6px);
+}
+
+.sidebar li.active{
+    background:#fff;
+    color:#7d0606;
+}
+
+/* ================= LOGOUT ================= */
+
+.sidebar li:last-child{
+    margin-top:auto;
+    color:#FFD6D6;
+}
+
+.sidebar li:last-child:hover{
+    background:#D9534F;
+    color:#fff;
+}
+
+/* ================= SCROLLBAR ================= */
+
+.sidebar::-webkit-scrollbar{
+    width:5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,.3);
+    border-radius:10px;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width:992px){
+
+    .sidebar{
+        width:220px;
+    }
+
+    .sidebar h2{
+        font-size:24px;
+    }
+
+    .sidebar li{
+        font-size:15px;
+        padding:14px;
+    }
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        min-height:auto;
+        padding:20px;
+    }
+
+    .sidebar h2{
+        margin-bottom:20px;
+    }
+
+    .sidebar ul{
+        flex-direction:row;
+        overflow-x:auto;
+        gap:12px;
+        padding-bottom:10px;
+    }
+
+    .sidebar li{
+        flex-shrink:0;
+        white-space:nowrap;
+        margin:0;
+        background:rgba(255,255,255,.1);
+    }
+
+    .sidebar li:hover{
+        transform:none;
+    }
+
+    .sidebar li:last-child{
+        margin-top:0;
+    }
+
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width:480px){
+
+    .sidebar h2{
+        font-size:20px;
+    }
+
+    .sidebar li{
+        font-size:14px;
+        padding:12px;
+    }
+
+    .sidebar li svg{
+        font-size:18px;
+    }
+
+}
