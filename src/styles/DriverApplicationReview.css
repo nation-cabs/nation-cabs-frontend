@@ -1,0 +1,40 @@
+.create-account-container {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 10px;
+    background: #f5f8ff;
+    border: 1px solid #dbe4ff;
+}
+
+.create-account-container h2 {
+    margin-bottom: 10px;
+}
+
+.create-account-container p {
+    margin-bottom: 20px;
+}
+
+.create-account-button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.create-account-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.account-created-container {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 10px;
+    background: #f3faf5;
+    border: 1px solid #cce8d2;
+}
+
+.driver-account-details {
+    margin-top: 15px;
+}
