@@ -4,25 +4,40 @@ body{
     background:#f5f7fb;
 }
 
-.signup-container{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.signup-container {
+    min-height: 100vh;
+
+    /* Background image */
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+        ),
+        url("../assets/images.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
 
-.signup-card{
-
-    width:400px;
-
-    background:white;
-
-    padding:40px;
-
-    border-radius:12px;
-
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
-
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.signup-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .signup-card h1{

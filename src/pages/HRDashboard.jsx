@@ -72,7 +72,7 @@ const HRDashboard = () => {
         );
     };
 
-
+ 
     if (loading) {
         return <p>Loading applications...</p>;
     }
