@@ -1,21 +1,14 @@
-function DashboardHeader(){
+import "../styles/DashboardHeader.css";
 
-    return(
-
+function DashboardHeader() {
+    return (
         <div className="dashboard-header">
-
-            <div>
-
-                <h1>Welcome Back </h1>
-
+            <div className="header-text">
+                <h1>Welcome Back!</h1>
                 <p>Manage your transport bookings.</p>
-
             </div>
-
         </div>
-
-    )
-
+    );
 }
 
 export default DashboardHeader;

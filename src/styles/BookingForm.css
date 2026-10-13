@@ -1,0 +1,119 @@
+
+/* ================= BOOKING FORM ================= */
+
+.booking-card {
+    width: 100%;
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 2px solid #0b2d50;
+    border-radius: 16px;
+    box-sizing: border-box;
+    border-left: 5px solid #0d10b8;
+}
+
+/* Form heading */
+.booking-card h2 {
+    color: #0b2d50;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5eaf0;
+}
+
+/* Form layout */
+.booking-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Input fields, dropdown and text area */
+.booking-card input,
+.booking-card select,
+.booking-card textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d1d9e2;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #1f2937;
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+}
+
+/* Placeholder text */
+.booking-card input::placeholder,
+.booking-card textarea::placeholder {
+    color: #8994a3;
+}
+
+/* Focus effect */
+.booking-card input:focus,
+.booking-card select:focus,
+.booking-card textarea:focus {
+    outline: none;
+    border-color: #0b2d50;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(11, 45, 80, 0.12);
+}
+
+/* Special instructions */
+.booking-card textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* Book Ride button */
+.booking-card button[type="submit"] {
+    width: 100%;
+    padding: 14px 20px;
+    margin-top: 5px;
+    background-color: #0b2d50;
+    color: #ffffff;
+    border: 2px solid #0b2d50;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Button hover effect */
+.booking-card button[type="submit"]:hover {
+    background-color: #164e78;
+    border-color: #164e78;
+    transform: translateY(-1px);
+}
+
+/* Button click effect */
+.booking-card button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .booking-card {
+        max-width: 100%;
+        margin: 15px auto;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .booking-card h2 {
+        font-size: 23px;
+    }
+
+    .booking-card input,
+    .booking-card select,
+    .booking-card textarea {
+        font-size: 14px;
+    }
+}

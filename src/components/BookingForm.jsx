@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createBooking } from "../services/bookingService.js";
 import "../styles/UserDashboard.css"
+import "../styles/BookingForm.css"; // Import the CSS file for BookingForm
+
 
 function BookingForm() {
 

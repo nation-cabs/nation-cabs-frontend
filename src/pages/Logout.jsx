@@ -1,21 +1,32 @@
-import {logout} from "../utils/auth.js";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth.js";
 
-const handleLogout = () =>{
-    const navigate = useNavigate();
+const LogoutButton = () => {
+const navigate = useNavigate();
 
-    logout();
-    navigate("/");
 
-    return (
-    <div className="logout">
-        <h1>Logout</h1>
-        
-       <button onClick={handleLogout}>
-    Logout
-</button>
+const handleLogout = () => {
+    const confirmed = window.confirm(
+        "Are you sure you want to logout?"
+    );
 
-    </div>
+    if (confirmed) {
+        logout();
+        navigate("/login", { replace: true });
+    }
+};
+
+return (
+    <button
+        type="button"
+        className="logout-button"
+        onClick={handleLogout}
+    >
+        Logout
+    </button>
 );
-}
-export default handleLogout;
+
+
+};
+
+export default LogoutButton;

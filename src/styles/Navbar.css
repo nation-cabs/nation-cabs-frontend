@@ -102,16 +102,19 @@
 .logout-btn{
     padding:10px 20px;
 
-    border:none;
-
     background:#7d0606;
+
+    border:2px solid #7d0606;
 
     color:white;
 
     cursor:pointer;
 
     border-radius:5px;
+    font-weight:bold;
+
 }
+
 
 .logo-link{
     text-decoration:none;
