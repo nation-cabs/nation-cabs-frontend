@@ -33,7 +33,7 @@
     padding:30px;
     border-radius:18px;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    box-shadow:0 10px 25px rgba(0, 0, 0, 0.8);
 
     opacity:0;
 
@@ -42,14 +42,19 @@
     transition:transform .5s ease, box-shadow .5s ease;
      transform:translateY(80px) rotate(-12deg) scale(.8);
 }
-
+.service-card p {
+    color: #bdbdbd;
+}
+.service-card h3 {
+    color: #c46a6a;
+}
 .service-card:hover{
 
     transform:
     translateY(-10px)
     scale(1.04);
 
-    box-shadow:0 20px 40px rgba(0,0,0,.15);
+    box-shadow:0 20px 40px rgba(10, 10, 10, 0.15);
 
 }
 

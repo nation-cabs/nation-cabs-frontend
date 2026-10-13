@@ -157,19 +157,26 @@ const HRDashboard = () => {
 
                         <div className="dashboard-stats">
 
-                            <div className="stat-card">
-                                <h3>New Applications</h3>
-                                <p>
-                                    {applications.length}
-                                </p>
-                            </div>
+    <div className="stat-card new">
+        <h3>New Applications</h3>
+        <p>{applications.length}</p>
+    </div>
 
-                            <div className="stat-card">
-                                <h3>Pending Review</h3>
-                                <p>
-                                    {applications.length}
-                                </p>
-                            </div>
+    <div className="stat-card pending">
+        <h3>Pending Review</h3>
+        <p>{applications.length}</p>
+    </div>
+
+    <div className="stat-card approved">
+        <h3>Approved Drivers</h3>
+        <p>0</p>
+    </div>
+
+    <div className="stat-card rejected">
+        <h3>Rejected Applications</h3>
+        <p>0</p>
+    </div>
+
 
                         </div>
                     </>

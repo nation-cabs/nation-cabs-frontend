@@ -71,47 +71,52 @@
     gap:15px;
 }
 
-.login-btn{
-    padding:10px 20px;
 
-    background:white;
-
-    border:2px solid #7d0606;
-
-    color:#7d0606;
-
-    cursor:pointer;
-
-    border-radius:5px;
+.login-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #7d0606;
+    color: #7d0606;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-.register-btn{
-    padding:10px 20px;
+/* Add hover here */
+.login-btn:hover {
+    background-color: #c46969;
+    color: white;
 
-    border:none;
-
-    background:#7d0606;
-
-    color:white;
-
-    cursor:pointer;
-
-    border-radius:5px;
+    
 }
 
-.logout-btn{
-    padding:10px 20px;
-
-    border:none;
-
-    background:#7d0606;
-
-    color:white;
-
-    cursor:pointer;
-
-    border-radius:5px;
+.register-btn {
+    padding: 10px 20px;
+    border: 2px solid #7d0606;
+    background-color: white;
+    color: #7d0606;
+    cursor: pointer;
+    border-radius: 5px;
 }
+
+/* Add hover here */
+.register-btn:hover {
+    background-color: #c46969;
+}
+
+.logout-btn {
+    padding: 10px 20px;
+    border: 2px solid #7d0606;
+    background-color: white;
+    color: #7d0606;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Add hover here */
+.logout-btn:hover {
+    background-color: #c46969;
+}
+
 
 .logo-link{
     text-decoration:none;
