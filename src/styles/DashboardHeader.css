@@ -1,0 +1,39 @@
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-bottom: 3px solid #0b2d50;
+}
+
+.header-text h1 {
+    color: #0b2d50;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.header-text p {
+    color: #1c5cdb;
+    font-size: 15px;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 20px;
+    }
+
+    .header-text h1 {
+        font-size: 23px;
+    }
+
+    .header-text p {
+        font-size: 14px;
+    }
+}

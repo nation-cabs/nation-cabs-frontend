@@ -1,0 +1,321 @@
+/* ================================
+   NATION CABS HR DASHBOARD
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+.hr-dashboard {
+    min-height: 100vh;
+    display: flex;
+    background: #f4f7fb;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1e293b;
+}
+
+
+/* ================================
+   SIDEBAR
+================================ */
+
+.hr-sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: #0b1f3a;
+    padding: 30px 18px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.08);
+}
+
+.hr-sidebar h2 {
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    margin: 0 0 45px 0;
+}
+
+
+/* ================================
+   NAVIGATION
+================================ */
+
+.hr-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hr-sidebar button {
+    width: 100%;
+    padding: 14px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #cbd5e1;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.hr-sidebar button:hover {
+    background: #0b499b;
+    color: white;
+    transform: translateX(3px);
+}
+
+.hr-sidebar button.active {
+    background: #1976d2;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);
+}
+
+
+/* ================================
+   MAIN AREA
+================================ */
+
+.hr-main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+
+    padding: 40px;
+}
+
+
+/* ================================
+   HEADINGS
+================================ */
+
+.hr-main h1 {
+    margin: 0 0 30px 0;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    color: #172b4d;
+}
+
+
+/* ================================
+   DASHBOARD STATISTICS
+================================ */
+
+.dashboard-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(250px, 1fr));
+
+    gap: 25px;
+
+    max-width: 850px;
+}
+
+.stat-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    border-left: 5px solid #1976d2;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.06);
+
+    transition: 0.25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.stat-card h3 {
+    margin: 0 0 15px 0;
+
+    font-size: 15px;
+
+    color: #64748b;
+}
+
+.stat-card p {
+    margin: 0;
+
+    font-size: 40px;
+    font-weight: 700;
+
+    color: #172b4d;
+}
+
+
+/* ================================
+   APPLICATIONS
+================================ */
+
+.applications-section {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.applications-section h1 {
+    margin-bottom: 5px;
+}
+
+.applications-section > p {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    color: #64748b;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ================================
+   APPROVED / REJECTED
+================================ */
+
+.hr-main section:not(.applications-section) {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.hr-main section:not(.applications-section) p {
+    color: #64748b;
+}
+
+
+/* ================================
+   LOADING / ERROR
+================================ */
+
+.hr-main > p {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    color: #475569;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+    .hr-sidebar {
+        width: 210px;
+    }
+
+    .hr-main {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+
+        padding: 30px;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .hr-dashboard {
+        display: block;
+    }
+
+    .hr-sidebar {
+        position: relative;
+
+        width: 100%;
+        min-height: auto;
+
+        padding: 20px;
+    }
+
+    .hr-sidebar h2 {
+        margin-bottom: 20px;
+    }
+
+    .hr-sidebar nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .hr-sidebar button {
+        width: auto;
+        flex: 1;
+
+        min-width: 130px;
+
+        text-align: center;
+    }
+
+    .hr-main {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 25px 20px;
+    }
+
+    .hr-main h1 {
+        font-size: 25px;
+    }
+}
+/* =========================================
+   STAT CARD COLORS
+========================================= */
+
+.stat-card.new {
+    border-left-color: #1976d2;
+}
+
+.stat-card.pending {
+    border-left-color: #f59e0b;
+}
+
+.stat-card.approved {
+    border-left-color: #16a34a;
+}
+
+.stat-card.rejected {
+    border-left-color: #dc2626;
+}

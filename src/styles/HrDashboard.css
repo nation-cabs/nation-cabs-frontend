@@ -69,7 +69,7 @@
 }
 
 .hr-sidebar button:hover {
-    background: #173e6d;
+    background: #0b499b;
     color: white;
     transform: translateX(3px);
 }
@@ -139,7 +139,6 @@
     transition: 0.25s;
 }
 
-
 .stat-card:hover {
     transform: translateY(-4px);
 
@@ -181,17 +180,19 @@
     margin-bottom: 5px;
 }
 
-.applications-section {
+.applications-section > p {
+    background: white;
+
     padding: 25px;
-    background: white;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+
+    border-radius: 12px;
+
+    color: #64748b;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
 }
-.application-card {
-    border-left: 5px solid #1976d2;
-    border-radius: 10px;
-    padding: 20px;
-    background: white;
-}
+
 
 /* ================================
    APPROVED / REJECTED
@@ -203,8 +204,6 @@
     padding: 30px;
 
     border-radius: 12px;
-
-    border-left: 5px solid #d21919;
 
     box-shadow:
         0 3px 12px rgba(0, 0, 0, 0.05);

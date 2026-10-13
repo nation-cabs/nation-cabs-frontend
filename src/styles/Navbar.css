@@ -89,6 +89,7 @@
     
 }
 
+<<<<<<< HEAD
 .register-btn {
     padding: 10px 20px;
     border: 2px solid #7d0606;
@@ -117,6 +118,24 @@
     background-color: #c46969;
 }
 
+=======
+.logout-btn{
+    padding:10px 20px;
+
+    background:#7d0606;
+
+    border:2px solid #7d0606;
+
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:5px;
+    font-weight:bold;
+
+}
+
+>>>>>>> c8b37308a68237d97f3e1471fc0cbe56d02d8c53
 
 .logo-link{
     text-decoration:none;
