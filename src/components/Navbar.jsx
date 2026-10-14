@@ -57,6 +57,31 @@ function Navbar() {
             Contact
           </a>
         </li>
+         <div className="mobile-buttons">
+          <Link
+            to="/login"
+            className="login-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Login
+          </Link>
+
+          <Link
+            to="/signup"
+            className="register-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Register
+          </Link>
+
+           <button
+          type="button"
+          className="logout-btn"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+        </div>
       </ul>
 
       <div className="nav-buttons">
