@@ -1,14 +1,15 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { createBooking } from "../services/bookingService.js";
 import "../styles/UserDashboard.css"
 import "../styles/BookingForm.css"; // Import the CSS file for BookingForm
 
 
-function BookingForm() {
+function BookingForm({ onBookingCreated }) {
 
-    const navigate = useNavigate();
+      const [loading, setLoading] = useState(false);
+    
 
     const [formData, setFormData] = useState({
 
@@ -38,36 +39,44 @@ function BookingForm() {
 
     };
 
-    const handleSubmit = async (e) => {
+    
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-        e.preventDefault();
+    try {
+        const response = await createBooking(formData);
 
-        try {
+        alert(
+            response.message ||
+            "Your ride has been booked successfully!"
+        );
 
-            const response = await createBooking(formData);
+        setFormData({
+            pickup_location: "",
+            dropoff_location: "",
+            pickup_datetime: "",
+            passengers: 1,
+            vehicle_type: "Sedan",
+            special_instructions: ""
+        });
 
-            alert(response.message);
-              alert("You've successfully placed you booking. Make sure to check your dashboard for your booking updates.");
-
-            navigate("/upcoming-bookings");
-
+        if (onBookingCreated) {
+            await onBookingCreated();
         }
+    } catch (error) {
+        console.error("Booking error:", error);
 
-        catch (error) {
+        alert(
+            error.response?.data?.message ||
+            "Unable to create booking."
+        );
+    } finally {
+        setLoading(false);
+    }
+};
 
-            console.error(error);
 
-            alert(
-
-                error.response?.data?.message ||
-
-                "Unable to create booking."
-
-            );
-
-        }
-
-    };
 
     return (
 
@@ -81,6 +90,7 @@ function BookingForm() {
                     type="text"
                     name="pickup_location"
                     placeholder="Pickup Location"
+                    value={formData.pickup_location}
                     onChange={handleChange}
                     required
                 />
@@ -132,11 +142,9 @@ function BookingForm() {
                     onChange={handleChange}
                 />
 
-                <button type="submit">
-
-                    Book Ride
-
-                </button>
+               <button type="submit" disabled={loading}>
+    {loading ? "Booking..." : "Book Ride"}
+</button>
 
             </form>
 

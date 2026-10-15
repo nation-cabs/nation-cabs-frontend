@@ -237,6 +237,22 @@ textarea::placeholder{
 
 }
 
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.date-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.date-field input {
+    width: 100%;
+    box-sizing: border-box;
+}
 /* ===========================
    TABLET
 =========================== */

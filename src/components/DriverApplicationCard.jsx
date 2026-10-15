@@ -1,7 +1,6 @@
 const DriverApplicationCard = ({
     application,
-    reviewApplication,
-    createDriverAccount
+    reviewApplication
 }) => {
 
     return (
@@ -13,9 +12,13 @@ const DriverApplicationCard = ({
                     {application.last_name}
                 </h3>
 
-                <p>{application.email}</p>
+                <p>
+                    {application.email}
+                </p>
 
-                <p>{application.phone}</p>
+                <p>
+                    {application.phone}
+                </p>
 
                 <p>
                     Status:{" "}
@@ -23,27 +26,41 @@ const DriverApplicationCard = ({
                         {application.application_status}
                     </strong>
                 </p>
+
+                {/* Rejection reason */}
+                {application.application_status === "rejected" &&
+                    application.admin_notes && (
+
+                    <div className="rejection-reason">
+
+                        <p>
+                            <strong>
+                                Rejection Reason:
+                            </strong>
+                        </p>
+
+                        <p>
+                            {application.admin_notes}
+                        </p>
+
+                    </div>
+
+                )}
+
             </div>
+
 
             <div className="application-actions">
 
                 <button
                     onClick={() =>
-                        reviewApplication(application.id)
+                        reviewApplication(
+                            application.id
+                        )
                     }
                 >
                     Review Application
                 </button>
-
-                {application.application_status === "approved" && (
-                    <button
-                        onClick={() =>
-                            createDriverAccount(application.id)
-                        }
-                    >
-                        Create Driver Account
-                    </button>
-                )}
 
             </div>
 

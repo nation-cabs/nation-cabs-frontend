@@ -15,12 +15,14 @@ body{
     display:flex;
     min-height:100vh;
     background-image:none;
+    background-image:none;
 }
 
 /* ================= SIDEBAR ================= */
 
 .sidebar{
     width:260px;
+    background:#1e14b1;
     background:#1e14b1;
     color:#fff;
     padding:40px 25px;
@@ -76,6 +78,7 @@ body{
 
 .dashboard-header h1{
     font-style: italic;
+    font-style: italic;
     font-size:34px;
     color:#222;
 }
@@ -88,6 +91,7 @@ body{
 /* ================= QUICK ACTION ================= */
 
 .quick-action{
+    background:#0e067d;
     background:#0e067d;
     color:#fff;
     padding:35px;
@@ -141,6 +145,9 @@ body{
 .history{
     border-left: 2px solid #15966a;
 }
+.history{
+    border-left: 2px solid #15966a;
+}
 
 /* ================= FORM ================= */
 
@@ -148,6 +155,9 @@ body{
     display:flex;
     flex-direction:column;
     gap:18px;
+}
+.booking-card{
+    border-left: 2px solid #090cc5;
 }
 .booking-card{
     border-left: 2px solid #090cc5;
@@ -175,6 +185,7 @@ body{
     resize:none;
     height:120px;
 
+
 }
 
 .booking-card input:focus,
@@ -188,6 +199,7 @@ body{
 
 .booking-card button{
 
+    background:#2c1b8f;
     background:#2c1b8f;
 
     color:#fff;
@@ -209,6 +221,7 @@ body{
 
 .booking-card button:hover{
 
+    background:#635cd1;
     background:#635cd1;
 
     transform:translateY(-2px);
@@ -245,6 +258,7 @@ body{
 
 .history th{
 
+    background:#2c1b8f;
     background:#2c1b8f;
 
     color:#fff;

@@ -20,6 +20,7 @@ const DriverApplicationReview = () => {
     const [accountCreated, setAccountCreated] = useState(false);
     const [createdUser, setCreatedUser] = useState(null);
     const [temporaryPassword, setTemporaryPassword] = useState("");
+    const [creatingAccount, setCreatingAccount] = useState(false);
 
     useEffect(() => {
         fetchApplication();
@@ -186,6 +187,149 @@ const viewDocument = async (documentType) => {
 };
 
 
+
+// ==========================================
+// REJECT APPLICATION
+// ==========================================
+
+const rejectApplication = async () => {
+
+    const adminNotes = window.prompt(
+        "Please enter the reason for rejecting this application:"
+    );
+
+    // User clicked Cancel
+    if (adminNotes === null) {
+        return;
+    }
+
+    // Prevent empty rejection reason
+    if (!adminNotes.trim()) {
+        alert(
+            "Please provide a reason for rejecting the application."
+        );
+        return;
+    }
+
+    const confirmed = window.confirm(
+        "Are you sure you want to reject this application?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const token =
+            localStorage.getItem("token");
+
+        const response = await axios.patch(
+            `${API}/hr/driver-applications/${id}/reject`,
+            {
+                adminNotes: adminNotes.trim()
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        console.log(
+            "REJECT RESPONSE:",
+            response.data
+        );
+
+        // Reload application
+        await fetchApplication();
+
+        alert(
+            response.data.message ||
+            "Driver application rejected successfully."
+        );
+
+    } catch (err) {
+
+        console.error(
+            "REJECT APPLICATION ERROR:",
+            err
+        );
+
+        console.error(
+            "SERVER RESPONSE:",
+            err.response?.data
+        );
+
+        alert(
+            err.response?.data?.message ||
+            "Failed to reject application."
+        );
+    }
+};
+
+
+// ==========================================
+// CREATE DRIVER ACCOUNT
+// ==========================================
+
+const createDriverAccount = async () => {
+    if (!application?.id) {
+        alert("Driver application ID is missing.");
+        return;
+    }
+
+    try {
+        setCreatingAccount(true);
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Your session has expired. Please log in again.");
+            return;
+        }
+
+        const response = await axios.post(
+            `${API}/hr/driver-applications/${application.id}/create-account`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        console.log("CREATE DRIVER ACCOUNT RESPONSE:", response.data);
+
+        // Store the created driver's details
+        setCreatedUser(response.data.user || null);
+
+        // Store the temporary password returned by the backend
+        setTemporaryPassword(
+            response.data.temporaryPassword || ""
+        );
+
+        setAccountCreated(true);
+
+        // Refresh the application to retrieve its latest status
+        await fetchApplication();
+
+        alert(
+            response.data.message ||
+            "Driver account created successfully."
+        );
+    } catch (err) {
+        console.error("CREATE DRIVER ACCOUNT ERROR:", err);
+        console.error("SERVER RESPONSE:", err.response?.data);
+
+        alert(
+            err.response?.data?.message ||
+            "Failed to create driver account."
+        );
+    } finally {
+        setCreatingAccount(false);
+    }
+};
 
     // ==========================================
     // APPLICATION NOT FOUND
@@ -422,7 +566,7 @@ const viewDocument = async (documentType) => {
                     <div className="detail-item">
 
                         <label>
-                            PDP Number
+                            PrDP Number
                         </label>
 
                         <p>
@@ -434,7 +578,7 @@ const viewDocument = async (documentType) => {
                     <div className="detail-item">
 
                         <label>
-                            PDP Expiry
+                            PrDP Expiry
                         </label>
 
                         <p>
@@ -587,7 +731,7 @@ const viewDocument = async (documentType) => {
                     <div className="document-card">
 
                         <h3>
-                            PDP Document
+                            PrDP Document
                         </h3>
 
                        {application.pdp_document ? (
@@ -597,7 +741,7 @@ const viewDocument = async (documentType) => {
             viewDocument("pdp")
         }
     >
-        View PDP
+        View PrDP
     </button>
 
 ) : (
@@ -644,7 +788,7 @@ const viewDocument = async (documentType) => {
                     <div className="document-card">
 
                         <h3>
-                            Profile Photo
+                            e-Hailing Profile
                         </h3>
 
                        {application.profile_photo ? (
@@ -669,6 +813,37 @@ const viewDocument = async (documentType) => {
 
 )}
                     </div>
+
+                         {/* CV DOCUMENT */}
+
+                    <div className="document-card">
+
+                         <h3>
+        CV Document
+    </h3>
+
+    {application.cv_document ? (
+
+        <div>
+
+            <button
+                onClick={() =>
+                    viewDocument("cv")
+                }
+            >
+                View CV Document
+            </button>
+
+        </div>
+
+) : (
+
+    <p>
+        No CV uploaded.
+    </p>
+
+)}
+                            </div>
 
                 </div>
 
@@ -710,17 +885,13 @@ const viewDocument = async (documentType) => {
                 {application.application_status === "pending" && (
 
                     <div className="review-actions">
-
-                        <button
-                            className="reject-button"
-                            onClick={() => {
-                                alert(
-                                    "Reject functionality will be added next."
-                                );
-                            }}
-                        >
-                            Reject Application
-                        </button>
+                        
+                <button
+                     className="reject-button"
+                     onClick={rejectApplication}
+                     >
+                       Reject Application
+                       </button>
 
                         <button
                             className="approve-button"
@@ -739,7 +910,7 @@ const viewDocument = async (documentType) => {
                 {/* ================================= */}
 
                 {application.application_status === "approved" &&
-                    !application.user_id && (
+                  ( !application.user_id || accountCreated) &&  (
                     
                     <div className="create-account-container">
 

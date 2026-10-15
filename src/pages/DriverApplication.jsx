@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "../styles/DriverApplication.css";
 import axios from "axios";
@@ -7,7 +8,6 @@ function DriverApplication() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-
         firstName: "",
         lastName: "",
         email: "",
@@ -35,222 +35,335 @@ function DriverApplication() {
         licenseDocument: null,
         pdpDocument: null,
         proofOfAddress: null,
-        profilePhoto: null,
+        driverProfile: null,
         cv: null,
 
         agreeInformation: false,
         agreeBackground: false,
         agreeTerms: false
-
     });
 
-   const handleChange = (e) => {
-  const { name, value, type, checked, files } = e.target;
+    // ==========================================
+    // HANDLE FORM CHANGES
+    // ==========================================
+    const handleChange = (e) => {
+        const { name, value, type, checked, files } = e.target;
 
-  if (type === "file") {
-    const file = files?.[0];
+        // ==========================================
+        // FILE INPUT
+        // ==========================================
+        if (type === "file") {
+            const file = files?.[0];
 
-    if (!file) return;
+            // No file selected
+            if (!file) {
+                return;
+            }
 
-    const documentFields = [
-      "idDocument",
-      "licenseDocument",
-      "pdpDocument",
-      "proofOfAddress",
-      "cv"
-    ];
+            // ==========================================
+            // DOCUMENT VALIDATION
+            // ==========================================
+            const documentFields = [
+                "idDocument",
+                "licenseDocument",
+                "pdpDocument",
+                "proofOfAddress",
+                "driverProfile",
+                "cv"
+            ];
 
-    const isDocument = documentFields.includes(name);
+            if (documentFields.includes(name)) {
+                const isPDF =
+                    file.type === "application/pdf" &&
+                    file.name.toLowerCase().endsWith(".pdf");
 
-    // -------------------------
-    // DOCUMENT VALIDATION
-    // -------------------------
-    if (isDocument) {
-      const isPDF =
-        file.type === "application/pdf" ||
-        file.name.toLowerCase().endsWith(".pdf");
+                if (!isPDF) {
+                    alert(
+                        "Only PDF files are allowed for this document."
+                    );
 
-      if (!isPDF) {
-        alert("Only PDF files are allowed for this document.");
-        e.target.value = "";
-        return;
-      }
+                    e.target.value = "";
+                    return;
+                }
 
-      const maxSize = 20 * 1024 * 1024; // 20 MB
+                const maxSize = 20 * 1024 * 1024; // 20 MB
 
-      if (file.size > maxSize) {
-        alert("PDF file must not exceed 20 MB.");
-        e.target.value = "";
-        return;
-      }
-    }
+                if (file.size > maxSize) {
+                    alert(
+                        "PDF file must not exceed 20 MB."
+                    );
 
-    // -------------------------
-    // PROFILE PHOTO VALIDATION
-    // -------------------------
-    if (name === "profilePhoto") {
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png"
-      ];
+                    e.target.value = "";
+                    return;
+                }
+            }
 
-      if (!allowedTypes.includes(file.type)) {
-        alert("Profile photo must be JPG, JPEG, or PNG.");
-        e.target.value = "";
-        return;
-      }
+            // ==========================================
+            // PROFILE PHOTO VALIDATION
+            // ==========================================
+           
+            // ==========================================
+            // SAVE FILE TO STATE
+            // ==========================================
+            setFormData((prev) => ({
+                ...prev,
+                [name]: file
+            }));
 
-      const maxSize = 5 * 1024 * 1024; // 5 MB
+            console.log(
+                `Selected ${name}:`,
+                {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                }
+            );
 
-      if (file.size > maxSize) {
-        alert("Profile photo must not exceed 5 MB.");
-        e.target.value = "";
-        return;
-      }
-    }
+            return;
+        }
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: file
-    }));
+        // ==========================================
+        // TEXT / CHECKBOX INPUTS
+        // ==========================================
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value
+        }));
+    };
 
-    return;
-  }
+    // ==========================================
+    // HANDLE SUBMIT
+    // ==========================================
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  setFormData((prev) => ({
-    ...prev,
-    [name]: type === "checkbox" ? checked : value
-  }));
-};
- const handleSubmit = async (e) => {
-    e.preventDefault();
+        const API = import.meta.env.VITE_API;
 
-    const API = import.meta.env.VITE_API;
+        try {
+            console.log(
+                "========== FORM STATE =========="
+            );
 
-   try {
-    console.log("Submitting application:", formData);
+            console.log(formData);
 
-    const data = new FormData();
+            // ==========================================
+            // CREATE FORMDATA
+            // ==========================================
+            const data = new FormData();
 
-    // Text fields
-    data.append("firstName", formData.firstName);
-    data.append("lastName", formData.lastName);
-    data.append("email", formData.email);
-    data.append("phone", formData.phone);
-    data.append("dateOfBirth", formData.dateOfBirth);
-    data.append("gender", formData.gender);
+            // ==========================================
+            // TEXT FIELDS
+            // ==========================================
+            data.append("firstName", formData.firstName);
+            data.append("lastName", formData.lastName);
+            data.append("email", formData.email);
+            data.append("phone", formData.phone);
+            data.append("dateOfBirth", formData.dateOfBirth);
+            data.append("gender", formData.gender);
 
-    data.append("province", formData.province);
-    data.append("city", formData.city);
-    data.append("address", formData.address);
+            data.append("province", formData.province);
+            data.append("city", formData.city);
+            data.append("address", formData.address);
 
-    data.append("licenseNumber", formData.licenseNumber);
-    data.append("licenseExpiry", formData.licenseExpiry);
+            data.append(
+                "licenseNumber",
+                formData.licenseNumber
+            );
 
-    data.append("pdpNumber", formData.pdpNumber);
-    data.append("pdpExpiry", formData.pdpExpiry);
+            data.append(
+                "licenseExpiry",
+                formData.licenseExpiry
+            );
 
-    data.append(
-        "drivingExperience",
-        formData.drivingExperience
-    );
+            data.append(
+                "pdpNumber",
+                formData.pdpNumber
+            );
 
-    data.append("emergencyName", formData.emergencyName);
-    data.append(
-        "emergencyRelationship",
-        formData.emergencyRelationship
-    );
-    data.append("emergencyPhone", formData.emergencyPhone);
+            data.append(
+                "pdpExpiry",
+                formData.pdpExpiry
+            );
 
-    // Checkboxes
-    data.append(
-        "agreeInformation",
-        formData.agreeInformation
-    );
+            data.append(
+                "drivingExperience",
+                formData.drivingExperience
+            );
 
-    data.append(
-        "agreeBackground",
-        formData.agreeBackground
-    );
+            data.append(
+                "emergencyName",
+                formData.emergencyName
+            );
 
-    data.append(
-        "agreeTerms",
-        formData.agreeTerms
-    );
+            data.append(
+                "emergencyRelationship",
+                formData.emergencyRelationship
+            );
 
-    // Files
-    if (formData.idDocument) {
-        data.append("idDocument", formData.idDocument);
-    }
+            data.append(
+                "emergencyPhone",
+                formData.emergencyPhone
+            );
 
-    if (formData.licenseDocument) {
-        data.append(
-            "licenseDocument",
-            formData.licenseDocument
-        );
-    }
+            // ==========================================
+            // CHECKBOXES
+            // ==========================================
+            data.append(
+                "agreeInformation",
+                String(formData.agreeInformation)
+            );
 
-    if (formData.pdpDocument) {
-        data.append(
-            "pdpDocument",
-            formData.pdpDocument
-        );
-    }
+            data.append(
+                "agreeBackground",
+                String(formData.agreeBackground)
+            );
 
-    if (formData.proofOfAddress) {
-        data.append(
-            "proofOfAddress",
-            formData.proofOfAddress
-        );
-    }
+            data.append(
+                "agreeTerms",
+                String(formData.agreeTerms)
+            );
 
-    if (formData.profilePhoto) {
-        data.append(
-            "profilePhoto",
-            formData.profilePhoto
-        );
-    }
+            // ==========================================
+            // FILES
+            // ==========================================
 
-    
-    if (formData.cv) {
-    data.append(
-        "cv",
-        formData.cv
-    );
-}
-    // SEND FormData
-    const response = await axios.post(
-        `${API}/driver-applications`,
-        data
-    );
+            if (formData.idDocument) {
+                data.append(
+                    "idDocument",
+                    formData.idDocument
+                );
+            }
 
-    console.log("Application saved:", response.data);
+            if (formData.licenseDocument) {
+                data.append(
+                    "licenseDocument",
+                    formData.licenseDocument
+                );
+            }
 
-    alert("Application submitted successfully!");
-      navigate("/");
+            if (formData.pdpDocument) {
+                data.append(
+                    "pdpDocument",
+                    formData.pdpDocument
+                );
+            }
 
-} catch (error) {
-    console.error("APPLICATION SUBMISSION ERROR:", error);
-    console.error("STATUS:", error.response?.status);
-    console.error("SERVER RESPONSE:", error.response?.data);
-    console.error("MESSAGE:", error.message);
-}
-};
+            if (formData.proofOfAddress) {
+                data.append(
+                    "proofOfAddress",
+                    formData.proofOfAddress
+                );
+            }
+
+            if (formData.driverProfile) {
+                data.append(
+                    "driverProfile",
+                    formData.driverProfile
+                );
+            }
+
+            // ==========================================
+            // CV
+            // ==========================================
+            // IMPORTANT:
+            // Your state property is "cv", NOT "cv_document".
+            if (formData.cv) {
+                data.append(
+                    "cv",
+                    formData.cv
+                );
+            }
+
+            // ==========================================
+            // DEBUG FORMDATA
+            // ==========================================
+            console.log(
+                "========== FORMDATA =========="
+            );
+
+            for (const [key, value] of data.entries()) {
+                if (value instanceof File) {
+                    console.log(key, {
+                        name: value.name,
+                        type: value.type,
+                        size: value.size
+                    });
+                } else {
+                    console.log(key, value);
+                }
+            }
+
+            console.log(
+                "=============================="
+            );
+
+            // ==========================================
+            // SEND REQUEST
+            // ==========================================
+            const response = await axios.post(
+                `${API}/driver-applications`,
+                data
+            );
+
+            console.log(
+                "Application saved:",
+                response.data
+            );
+
+            alert(
+                "Application submitted successfully!"
+            );
+
+            navigate("/");
+
+        } catch (error) {
+            console.error(
+                "APPLICATION SUBMISSION ERROR:",
+                error
+            );
+
+            console.error(
+                "STATUS:",
+                error.response?.status
+            );
+
+            console.error(
+                "SERVER RESPONSE:",
+                error.response?.data
+            );
+
+            console.error(
+                "MESSAGE:",
+                error.message
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to submit application. Please try again."
+            );
+        }
+    };
 
     return (
-
         <div className="driver-application">
 
             <div className="application-card">
 
-                <h1>Become a Nation Cabs Driver</h1>
+                <h1>
+                    Become a Nation Cabs Driver
+                </h1>
 
                 <p>
-                    Complete the application below. Our recruitment team
-                    will review your application and contact you.
+                    Complete the application below. Our
+                    recruitment team will review your
+                    application and contact you.
                 </p>
 
                 <form onSubmit={handleSubmit}>
+
+                    {/* ==========================================
+                        PERSONAL INFORMATION
+                    ========================================== */}
 
                     <h2>Personal Information</h2>
 
@@ -285,24 +398,43 @@ function DriverApplication() {
                             required
                         />
 
-                        <input
-                            type="date"
-                            name="dateOfBirth"
-                            onChange={handleChange}
-                            required
-                        />
+                         <div className="date-field">
+        <label htmlFor="dateOfBirth">
+            Date of Birth
+        </label>
+
+        <input
+            type="date"
+            id="dateOfBirth"
+            name="dateOfBirth"
+            onChange={handleChange}
+            required
+        />
+    </div>
 
                         <select
                             name="gender"
                             onChange={handleChange}
                             required
                         >
-                            <option value="">Gender</option>
-                            <option>Male</option>
-                            <option>Female</option>
+                            <option value="">
+                                Gender
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
                         </select>
 
                     </div>
+
+                    {/* ==========================================
+                        ADDRESS
+                    ========================================== */}
 
                     <h2>Address</h2>
 
@@ -332,6 +464,10 @@ function DriverApplication() {
 
                     </div>
 
+                    {/* ==========================================
+                        DRIVER INFORMATION
+                    ========================================== */}
+
                     <h2>Driver Information</h2>
 
                     <div className="form-grid">
@@ -343,12 +479,19 @@ function DriverApplication() {
                             required
                         />
 
-                        <input
-                            type="date"
-                            name="licenseExpiry"
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="date-field">
+        <label htmlFor="licenseExpiry">
+            Driver's Licence Expiry Date
+        </label>
+
+        <input
+            type="date"
+            id="licenseExpiry"
+            name="licenseExpiry"
+            onChange={handleChange}
+            required
+        />
+    </div>
 
                         <input
                             name="pdpNumber"
@@ -357,22 +500,33 @@ function DriverApplication() {
                             required
                         />
 
-                        <input
-                            type="date"
-                            name="pdpExpiry"
-                            onChange={handleChange}
-                            required
-                        />
+                          <div className="date-field">
+        <label htmlFor="pdpExpiry">
+            PrDP Expiry Date
+        </label>
+
+        <input
+            type="date"
+            id="pdpExpiry"
+            name="pdpExpiry"
+            onChange={handleChange}
+        />
+    </div>
 
                         <input
                             type="number"
                             name="drivingExperience"
                             placeholder="Years of Driving Experience"
+                            min="0"
                             onChange={handleChange}
                             required
                         />
 
                     </div>
+
+                    {/* ==========================================
+                        EMERGENCY CONTACT
+                    ========================================== */}
 
                     <h2>Emergency Contact</h2>
 
@@ -401,121 +555,140 @@ function DriverApplication() {
 
                     </div>
 
-                   <h2>Upload Documents</h2>
+                    {/* ==========================================
+                        DOCUMENTS
+                    ========================================== */}
 
-<div className="upload-grid">
+                    <h2>Upload Documents</h2>
 
-    <label>
-        South African ID
-        <input
-            type="file"
-            name="idDocument"
-            accept=".pdf,application/pdf"
-            onChange={handleChange}
-            required
-        />
-    </label>
+                    <div className="upload-grid">
 
-    <label>
-        Driver's Licence
-        <input
-            type="file"
-            name="licenseDocument"
-            accept=".pdf,application/pdf"
-            onChange={handleChange}
-            required
-        />
-    </label>
+                        <label>
+                            South African ID
 
-    <label>
-        PDP Certificate
-        <input
-            type="file"
-            name="pdpDocument"
-            accept=".pdf,application/pdf"
-            onChange={handleChange}
-            required
-        />
-    </label>
+                            <input
+                                type="file"
+                                name="idDocument"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
 
-    <label>
-        Proof of Address
-        <input
-            type="file"
-            name="proofOfAddress"
-            accept=".pdf,application/pdf"
-            onChange={handleChange}
-            required
-        />
-    </label>
+                        <label>
+                            Driver's Licence with PrDP
 
-    <label>
-        CV
-        <input
-            type="file"
-            name="cvDocument"
-            accept=".pdf,application/pdf"
-            onChange={handleChange}
-            required
-        />
+                            <input
+                                type="file"
+                                name="licenseDocument"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
 
-        <small>
-            Upload your CV in PDF format only. Maximum size: 20 MB.
-        </small>
-    </label>
+                        <label>
+                           Criminal Check Document
 
-    <label>
-        Profile Photo
-        <input
-            type="file"
-            name="profilePhoto"
-            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-            onChange={handleChange}
-            required
-        />
-    </label>
+                            <input
+                                type="file"
+                                name="pdpDocument"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
 
-</div>
+                        <label>
+                            Proof of Address
+
+                            <input
+                                type="file"
+                                name="proofOfAddress"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+
+                        <label>
+                            E-Hailing  Profile
+
+                            <input
+                                type="file"
+                                name="driverProfile"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+
+                        <label>
+                            CV Document
+
+                            <input
+                                type="file"
+                                name="cv"
+                                accept=".pdf,application/pdf"
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <small>
+                                Upload your CV in PDF format only.
+                                Maximum size: 20 MB.
+                            </small>
+                        </label>
+
+                    </div>
+
+                    {/* ==========================================
+                        AGREEMENTS
+                    ========================================== */}
 
                     <div className="checkboxes">
 
                         <label>
-
                             <input
                                 type="checkbox"
                                 name="agreeInformation"
                                 onChange={handleChange}
+                                required
                             />
 
-                            I confirm that the information provided is accurate.
-
+                            I confirm that the information
+                            provided is accurate.
                         </label>
 
                         <label>
-
                             <input
                                 type="checkbox"
                                 name="agreeBackground"
                                 onChange={handleChange}
+                                required
                             />
 
-                            I consent to a background verification.
-
+                            I consent to a background
+                            verification.
                         </label>
 
                         <label>
-
                             <input
                                 type="checkbox"
                                 name="agreeTerms"
                                 onChange={handleChange}
+                                required
                             />
 
-                            I agree to the Nation Cabs Terms and Conditions.
-
+                            I agree to the Nation Cabs
+                            Terms and Conditions.
                         </label>
 
                     </div>
+
+                    {/* ==========================================
+                        SUBMIT
+                    ========================================== */}
 
                     <button
                         className="submit-btn"
@@ -529,9 +702,7 @@ function DriverApplication() {
             </div>
 
         </div>
-
     );
-
 }
 
 export default DriverApplication;

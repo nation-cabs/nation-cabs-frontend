@@ -1,6 +1,20 @@
 
 /* ===== Nation Cabs Sidebar ===== */
 
+/* ===== Nation Cabs Sidebar ===== */
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    min-height: 100vh;
+    padding: 32px 18px;
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(180deg, #102b50 0%, #0b1f3a 100%);
+    color: #ffffff;
+
+    box-shadow: 5px 0 22px rgba(16, 43, 80, 0.08);
 .sidebar {
     width: 260px;
     min-width: 260px;
@@ -17,6 +31,16 @@
 
 /* Brand */
 
+/* Brand */
+
+.sidebar h2 {
+    margin: 4px 0 42px;
+    padding: 0 12px;
+    font-style: italic;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 750;
+    letter-spacing: 0.3px;
 .sidebar h2 {
     margin: 4px 0 42px;
     padding: 0 12px;
@@ -28,7 +52,39 @@
 }
 
 /* Navigation list */
+/* Navigation list */
 
+.sidebar ul {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Navigation items */
+
+.sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-height: 48px;
+    padding: 13px 15px;
+
+    color: #d5dfed;
+    font-size: 15px;
+    font-weight: 500;
+
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 .sidebar ul {
     display: flex;
     flex-direction: column;
@@ -68,8 +124,20 @@
     flex-shrink: 0;
     width: 18px;
     font-size: 17px;
+/* Icons */
+
+.sidebar li svg {
+    flex-shrink: 0;
+    width: 18px;
+    font-size: 17px;
 }
 
+/* Hover effect */
+
+.sidebar li:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.10);
+    transform: translateX(3px);
 /* Hover effect */
 
 .sidebar li:hover {
@@ -85,10 +153,21 @@
     background: #3478f6;
     font-weight: 650;
     box-shadow: 0 5px 14px rgba(52, 120, 246, 0.22);
+/* Active navigation item */
+
+.sidebar li:first-child {
+    color: #ffffff;
+    background: #3478f6;
+    font-weight: 650;
+    box-shadow: 0 5px 14px rgba(52, 120, 246, 0.22);
 }
 
 /* Logout */
+/* Logout */
 
+.sidebar li:last-child {
+    margin-top: 24px;
+    color: #ffb7b7;
 .sidebar li:last-child {
     margin-top: 24px;
     color: #ffb7b7;
@@ -97,10 +176,19 @@
 .sidebar li:last-child:hover {
     color: #ffffff;
     background: rgba(224, 82, 82, 0.18);
+.sidebar li:last-child:hover {
+    color: #ffffff;
+    background: rgba(224, 82, 82, 0.18);
 }
 
 /* Responsive layout */
+/* Responsive layout */
 
+@media (max-width: 768px) {
+    .sidebar {
+        width: 210px;
+        min-width: 210px;
+        padding: 25px 12px;
 @media (max-width: 768px) {
     .sidebar {
         width: 210px;
@@ -111,8 +199,24 @@
     .sidebar h2 {
         font-size: 21px;
         margin-bottom: 30px;
+    .sidebar h2 {
+        font-size: 21px;
+        margin-bottom: 30px;
     }
 
+    .sidebar li {
+        gap: 10px;
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 72px;
+        min-width: 72px;
+        padding: 22px 9px;
+        align-items: center;
     .sidebar li {
         gap: 10px;
         padding: 12px 10px;
@@ -135,14 +239,28 @@
         overflow: hidden;
         font-size: 0;
         text-align: center;
+    .sidebar h2 {
+        width: 100%;
+        margin: 0 0 30px;
+        padding: 0;
+        overflow: hidden;
+        font-size: 0;
+        text-align: center;
     }
 
     .sidebar h2::after {
         content: "NC";
         font-size: 20px;
         font-weight: 800;
+    .sidebar h2::after {
+        content: "NC";
+        font-size: 20px;
+        font-weight: 800;
     }
 
+    .sidebar ul {
+        width: 100%;
+        align-items: center;
     .sidebar ul {
         width: 100%;
         align-items: center;
@@ -154,13 +272,24 @@
         padding: 14px 0;
         font-size: 0;
         gap: 0;
+    .sidebar li {
+        justify-content: center;
+        width: 100%;
+        padding: 14px 0;
+        font-size: 0;
+        gap: 0;
     }
 
     .sidebar li svg {
         width: 20px;
         font-size: 19px;
+    .sidebar li svg {
+        width: 20px;
+        font-size: 19px;
     }
 
+    .sidebar li:hover {
+        transform: none;
     .sidebar li:hover {
         transform: none;
     }
