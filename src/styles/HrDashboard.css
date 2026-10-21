@@ -164,10 +164,6 @@
 }
 
 
-/* ================================
-   APPLICATIONS
-================================ */
-
 .applications-section {
     width: 100%;
 
@@ -314,7 +310,7 @@
 }
 
 .stat-card.rejected {
-    border-left-color: #dc2626;g
+    border-left-color: #dc2626;
 }
 .hr-logout-btn {
     width: 100%;
