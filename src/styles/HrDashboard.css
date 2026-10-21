@@ -300,9 +300,6 @@
         font-size: 25px;
     }
 }
-/* =========================================
-   STAT CARD COLORS
-========================================= */
 
 .stat-card.new {
     border-left-color: #1976d2;
@@ -317,10 +314,8 @@
 }
 
 .stat-card.rejected {
-    border-left-color: #dc2626;
+    border-left-color: #dc2626;g
 }
-/* HR Dashboard Logout Button */
-
 .hr-logout-btn {
     width: 100%;
     padding: 12px 16px;
