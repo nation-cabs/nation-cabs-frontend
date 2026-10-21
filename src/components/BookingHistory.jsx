@@ -98,6 +98,7 @@ function BookingHistory({ refreshKey = 0 }) {
             hour12: false
         });
     };
+<<<<<<< HEAD
 
     return (
         <div className="booking-card history">
@@ -121,6 +122,85 @@ function BookingHistory({ refreshKey = 0 }) {
                 <div className="booking-error" role="alert">
                     <p>{error}</p>
 
+=======
+const getStatusStyle = (status) => {
+    const value = String(status || "N/A")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s_]+/g, "-");
+
+    const styles = {
+        cancelled: {
+            backgroundColor: "#fee2e2",
+            color: "#b91c1c",
+            border: "1px solid #ef4444"
+        },
+        canceled: {
+            backgroundColor: "#fee2e2",
+            color: "#b91c1c",
+            border: "1px solid #ef4444"
+        },
+        rejected: {
+            backgroundColor: "#fee2e2",
+            color: "#b91c1c",
+            border: "1px solid #ef4444"
+        },
+        completed: {
+            backgroundColor: "#dcfce7",
+            color: "#15803d",
+            border: "1px solid #22c55e"
+        },
+        pending: {
+            backgroundColor: "#dbeafe",
+            color: "#1d4ed8",
+            border: "1px solid #3b82f6"
+        },
+        "driver-assigned": {
+            backgroundColor: "#fef3c7",
+            color: "#92400e",
+            border: "1px solid #f59e0b"
+        }
+    };
+
+    return {
+        display: "inline-block",
+        padding: "6px 10px",
+        borderRadius: "20px",
+        fontSize: "12px",
+        fontWeight: "700",
+        whiteSpace: "nowrap",
+        ...(
+            styles[value] || {
+                backgroundColor: "#f3f4f6",
+                color: "#374151",
+                border: "1px solid #d1d5db"
+            }
+        )
+    };
+};
+    return (
+        <div className="booking-card history">
+            <div className="history-header">
+                <h2>Booking History</h2>
+
+                <button
+                    type="button"
+                    onClick={fetchHistory}
+                    disabled={loading}
+                >
+                    {loading ? "Loading..." : "Refresh"}
+                </button>
+            </div>
+
+            {loading && (
+                <p role="status">Loading booking history...</p>
+            )}
+
+            {!loading && error && (
+                <div className="booking-error" role="alert">
+                    <p>{error}</p>
+
+>>>>>>> e23bfaa (added colors to booking status)
                     <button
                         type="button"
                         onClick={fetchHistory}
@@ -190,9 +270,28 @@ function BookingHistory({ refreshKey = 0 }) {
                                         {booking.vehicle_type || "Sedan"}
                                     </td>
 
+<<<<<<< HEAD
                                     <td>
                                         {booking.booking_status || "N/A"}
                                     </td>
+=======
+                                    
+
+<td>
+    <span
+        className={`history-status ${String(
+            booking.booking_status || "N/A"
+        )
+            .trim()
+            .toLowerCase()
+            .replace(/[\s_]+/g, "-")}`}
+        style={getStatusStyle(booking.booking_status)}
+    >
+        {booking.booking_status || "N/A"}
+    </span>
+</td>
+
+>>>>>>> e23bfaa (added colors to booking status)
                                 </tr>
                             ))}
                         </tbody>

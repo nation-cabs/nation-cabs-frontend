@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 .history {
     width: 100%;
     padding: 24px;
@@ -53,6 +54,8 @@
     border-bottom: none;
 }
 
+=======
+>>>>>>> e23bfaa (added colors to booking status)
 .history-status {
     display: inline-block;
     padding: 6px 10px;
@@ -60,6 +63,7 @@
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
+<<<<<<< HEAD
     background: #eee;
     color: #444;
 }
@@ -114,3 +118,59 @@
         padding: 11px 12px;
     }
 }
+=======
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+
+/* Cancelled — Red */
+.history-status.cancelled,
+.history-status.canceled,
+.history-status.rejected {
+    background-color: #fee2e2 !important;
+    color: #b91c1c !important;
+    border: 1px solid #ef4444;
+}
+
+/* Completed — Green */
+.history-status.completed {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+    border: 1px solid #22c55e;
+}
+
+/* Pending — Blue */
+.history-status.pending {
+    background-color: #dbeafe !important;
+    color: #1d4ed8 !important;
+    border: 1px solid #3b82f6;
+}
+
+/* Driver Assigned — Amber */
+.history-status.driver-assigned {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1px solid #f59e0b;
+}
+.history-table-wrapper {
+    margin-top: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+/* Other statuses — Grey */
+.history-status:not(.cancelled):not(.canceled):not(.rejected):not(.completed):not(.pending):not(.driver-assigned) {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+>>>>>>> e23bfaa (added colors to booking status)
