@@ -595,7 +595,7 @@ function DriverApplication() {
                                 name="pdpDocument"
                                 accept=".pdf,application/pdf"
                                 onChange={handleChange}
-                                required
+                                
                             />
                         </label>
 
@@ -619,7 +619,7 @@ function DriverApplication() {
                                 name="driverProfile"
                                 accept=".pdf,application/pdf"
                                 onChange={handleChange}
-                                required
+                                
                             />
                         </label>
 

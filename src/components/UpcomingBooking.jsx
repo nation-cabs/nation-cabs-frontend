@@ -18,8 +18,9 @@ function UpcomingBooking({ refreshKey = 0 }) {
             // Support either an array or a wrapped API response.
             const allBookings = Array.isArray(response)
                 ? response
-                : response.bookings ??
-                  response.data ??
+                : response?.bookings ??
+                  response?.data?.bookings ??
+                  response?.data ??
                   [];
 
             if (!Array.isArray(allBookings)) {
@@ -35,20 +36,13 @@ function UpcomingBooking({ refreshKey = 0 }) {
                     );
 
                     const status = String(
-                        booking.booking_status || "pending"
-                    ).toLowerCase();
-
-                    const excludedStatuses = [
-                        "completed",
-                        "cancelled",
-                        "canceled",
-                        "rejected"
-                    ];
+                        booking.booking_status ?? ""
+                    ).trim().toLowerCase();
 
                     return (
+                        status === "pending" &&
                         !Number.isNaN(pickupDate.getTime()) &&
-                        pickupDate >= now &&
-                        !excludedStatuses.includes(status)
+                        pickupDate >= now
                     );
                 })
                 .sort(
@@ -59,7 +53,10 @@ function UpcomingBooking({ refreshKey = 0 }) {
 
             setBookings(upcoming);
         } catch (err) {
-            console.error("Failed to fetch upcoming bookings:", err);
+            console.error(
+                "Failed to fetch upcoming bookings:",
+                err
+            );
 
             setError(
                 err.response?.data?.message ||
@@ -79,14 +76,14 @@ function UpcomingBooking({ refreshKey = 0 }) {
         new Date(value).toLocaleDateString("en-ZA", {
             day: "2-digit",
             month: "short",
-            year: "numeric"
+            year: "numeric",
         });
 
     const formatTime = (value) =>
         new Date(value).toLocaleTimeString("en-ZA", {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: false
+            hour12: false,
         });
 
     return (
@@ -105,7 +102,9 @@ function UpcomingBooking({ refreshKey = 0 }) {
             </div>
 
             {loading && (
-                <p role="status">Loading your bookings...</p>
+                <p role="status">
+                    Loading your bookings...
+                </p>
             )}
 
             {!loading && error && (
@@ -124,10 +123,12 @@ function UpcomingBooking({ refreshKey = 0 }) {
             {!loading && !error && bookings.length === 0 && (
                 <div className="no-upcoming-bookings">
                     <p className="upcoming-empty-icon"></p>
-                    <h3>No upcoming bookings</h3>
+
+                    <h3>No pending upcoming bookings</h3>
+
                     <p>
-                        Once you book a ride, your upcoming
-                        journey will appear here.
+                        Your upcoming bookings with Pending status
+                        will appear here.
                     </p>
                 </div>
             )}
@@ -137,7 +138,10 @@ function UpcomingBooking({ refreshKey = 0 }) {
                     {bookings.map((booking) => (
                         <article
                             className="upcoming-booking-item"
-                            key={booking.id ?? booking.booking_id}
+                            key={
+                                booking.id ??
+                                booking.booking_id
+                            }
                         >
                             <div className="upcoming-booking-top">
                                 <span className="booking-date">
@@ -146,15 +150,16 @@ function UpcomingBooking({ refreshKey = 0 }) {
                                     )}
                                 </span>
 
-                               <span className="booking-status">
-                               {booking.booking_status || "Pending"}
-                             </span>
-                             
+                                <span className="booking-status">
+                                    {booking.booking_status}
+                                </span>
                             </div>
 
                             <p>
                                 <strong>Time:</strong>{" "}
-                                {formatTime(booking.pickup_datetime)}
+                                {formatTime(
+                                    booking.pickup_datetime
+                                )}
                             </p>
 
                             <p>
@@ -185,4 +190,5 @@ function UpcomingBooking({ refreshKey = 0 }) {
 }
 
 export default UpcomingBooking;
+
 

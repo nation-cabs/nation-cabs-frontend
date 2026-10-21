@@ -17,7 +17,10 @@ function BookingHistory({ refreshKey = 0 }) {
 
             const allBookings = Array.isArray(response)
                 ? response
-                : response?.bookings ?? response?.data ?? [];
+                : response?.bookings ??
+                  response?.data?.bookings ??
+                  response?.data ??
+                  [];
 
             if (!Array.isArray(allBookings)) {
                 throw new Error("Invalid bookings response.");
@@ -27,16 +30,21 @@ function BookingHistory({ refreshKey = 0 }) {
 
             const history = allBookings
                 .filter((booking) => {
+                    // Exclude all pending bookings.
                     const status = String(
-                        booking.booking_status || "Pending"
-                    ).toLowerCase();
+                        booking.booking_status ?? ""
+                    ).trim().toLowerCase();
 
-                    const finalStatus = [
+                    if (status === "pending") {
+                        return false;
+                    }
+
+                    const finalStatuses = [
                         "completed",
                         "cancelled",
                         "canceled",
                         "rejected"
-                    ].includes(status);
+                    ];
 
                     const pickupDate = new Date(
                         booking.pickup_datetime
@@ -46,7 +54,9 @@ function BookingHistory({ refreshKey = 0 }) {
                         !Number.isNaN(pickupDate.getTime()) &&
                         pickupDate < now;
 
-                    return finalStatus || isPast;
+                    // Include completed/cancelled/rejected bookings
+                    // and other non-pending bookings with past dates.
+                    return finalStatuses.includes(status) || isPast;
                 })
                 .sort(
                     (a, b) =>
@@ -110,7 +120,11 @@ function BookingHistory({ refreshKey = 0 }) {
             {!loading && error && (
                 <div className="booking-error" role="alert">
                     <p>{error}</p>
-                    <button type="button" onClick={fetchHistory}>
+
+                    <button
+                        type="button"
+                        onClick={fetchHistory}
+                    >
                         Try Again
                     </button>
                 </div>
@@ -142,28 +156,42 @@ function BookingHistory({ refreshKey = 0 }) {
 
                         <tbody>
                             {bookings.map((booking) => (
-                                <tr key={booking.id}>
+                                <tr
+                                    key={
+                                        booking.id ??
+                                        booking.booking_id
+                                    }
+                                >
                                     <td>
                                         {booking.id
-                                            ? booking.id.slice(0, 8)
+                                            ? String(booking.id).slice(0, 8)
+                                            : booking.booking_id
+                                            ? String(
+                                                  booking.booking_id
+                                              ).slice(0, 8)
                                             : "N/A"}
                                     </td>
+
                                     <td>
                                         {formatDate(
                                             booking.pickup_datetime
                                         )}
                                     </td>
+
                                     <td>
                                         {booking.pickup_location || "N/A"}
                                     </td>
+
                                     <td>
                                         {booking.dropoff_location || "N/A"}
                                     </td>
+
                                     <td>
                                         {booking.vehicle_type || "Sedan"}
                                     </td>
+
                                     <td>
-                                        {booking.booking_status || "Pending"}
+                                        {booking.booking_status || "N/A"}
                                     </td>
                                 </tr>
                             ))}
