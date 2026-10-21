@@ -10,3 +10,12 @@ export const createBooking = async (bookingData) => {
     return response.data;
 
 };
+
+export const getBookings = async () =>{
+
+     const response = await axiosInstance.get(
+        "/bookings");
+
+        return response.data;
+
+}

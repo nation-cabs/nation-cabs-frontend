@@ -1,57 +1,206 @@
-function BookingHistory(){
 
-    return(
+import { useCallback, useEffect, useState } from "react";
+import { getBookings } from "../services/bookingService.js";
+import "../styles/BookingHistory.css";
 
-        <div className="history">
+function BookingHistory({ refreshKey = 0 }) {
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-            <h2>Booking History</h2>
+    const fetchHistory = useCallback(async () => {
+        setLoading(true);
+        setError("");
 
-            <table>
+        try {
+            const response = await getBookings();
 
-                <thead>
+            const allBookings = Array.isArray(response)
+                ? response
+                : response?.bookings ??
+                  response?.data?.bookings ??
+                  response?.data ??
+                  [];
 
-                    <tr>
+            if (!Array.isArray(allBookings)) {
+                throw new Error("Invalid bookings response.");
+            }
 
-                        <th>ID</th>
+            const now = new Date();
 
-                        <th>Date</th>
+            const history = allBookings
+                .filter((booking) => {
+                    // Exclude all pending bookings.
+                    const status = String(
+                        booking.booking_status ?? ""
+                    ).trim().toLowerCase();
 
-                        <th>Status</th>
+                    if (status === "pending") {
+                        return false;
+                    }
 
-                    </tr>
+                    const finalStatuses = [
+                        "completed",
+                        "cancelled",
+                        "canceled",
+                        "rejected"
+                    ];
 
-                </thead>
+                    const pickupDate = new Date(
+                        booking.pickup_datetime
+                    );
 
-                <tbody>
+                    const isPast =
+                        !Number.isNaN(pickupDate.getTime()) &&
+                        pickupDate < now;
 
-                    <tr>
+                    // Include completed/cancelled/rejected bookings
+                    // and other non-pending bookings with past dates.
+                    return finalStatuses.includes(status) || isPast;
+                })
+                .sort(
+                    (a, b) =>
+                        new Date(b.pickup_datetime) -
+                        new Date(a.pickup_datetime)
+                );
 
-                        <td>NC1001</td>
+            setBookings(history);
+        } catch (err) {
+            console.error("Failed to fetch booking history:", err);
 
-                        <td>10 Jul 2026</td>
+            setError(
+                err.response?.data?.message ||
+                err.message ||
+                "Unable to load booking history."
+            );
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-                        <td>Completed</td>
+    useEffect(() => {
+        fetchHistory();
+    }, [fetchHistory, refreshKey]);
 
-                    </tr>
+    const formatDate = (value) => {
+        if (!value) return "N/A";
 
-                    <tr>
+        const date = new Date(value);
 
-                        <td>NC1002</td>
+        if (Number.isNaN(date.getTime())) return "N/A";
 
-                        <td>08 Jul 2026</td>
+        return date.toLocaleString("en-ZA", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
+    };
 
-                        <td>Completed</td>
+    return (
+        <div className="booking-card history">
+            <div className="history-header">
+                <h2>Booking History</h2>
 
-                    </tr>
+                <button
+                    type="button"
+                    onClick={fetchHistory}
+                    disabled={loading}
+                >
+                    {loading ? "Loading..." : "Refresh"}
+                </button>
+            </div>
 
-                </tbody>
+            {loading && (
+                <p role="status">Loading booking history...</p>
+            )}
 
-            </table>
+            {!loading && error && (
+                <div className="booking-error" role="alert">
+                    <p>{error}</p>
 
+                    <button
+                        type="button"
+                        onClick={fetchHistory}
+                    >
+                        Try Again
+                    </button>
+                </div>
+            )}
+
+            {!loading && !error && bookings.length === 0 && (
+                <div className="history-empty">
+                    <h3>No previous bookings</h3>
+                    <p>
+                        Your completed rides and other past bookings
+                        will appear here.
+                    </p>
+                </div>
+            )}
+
+            {!loading && !error && bookings.length > 0 && (
+                <div className="history-table-wrapper">
+                    <table className="history-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Pickup Date &amp; Time</th>
+                                <th>Pickup</th>
+                                <th>Destination</th>
+                                <th>Vehicle</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {bookings.map((booking) => (
+                                <tr
+                                    key={
+                                        booking.id ??
+                                        booking.booking_id
+                                    }
+                                >
+                                    <td>
+                                        {booking.id
+                                            ? String(booking.id).slice(0, 8)
+                                            : booking.booking_id
+                                            ? String(
+                                                  booking.booking_id
+                                              ).slice(0, 8)
+                                            : "N/A"}
+                                    </td>
+
+                                    <td>
+                                        {formatDate(
+                                            booking.pickup_datetime
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {booking.pickup_location || "N/A"}
+                                    </td>
+
+                                    <td>
+                                        {booking.dropoff_location || "N/A"}
+                                    </td>
+
+                                    <td>
+                                        {booking.vehicle_type || "Sedan"}
+                                    </td>
+
+                                    <td>
+                                        {booking.booking_status || "N/A"}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
-
-    )
-
+    );
 }
 
 export default BookingHistory;

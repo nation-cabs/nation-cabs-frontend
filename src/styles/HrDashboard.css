@@ -319,20 +319,24 @@
 .stat-card.rejected {
     border-left-color: #dc2626;
 }
-.hr-logout-btn{
+/* HR Dashboard Logout Button */
+
+.hr-logout-btn {
     width: 100%;
     padding: 12px 16px;
     margin-top: 20px;
-    background-color:#ffffff;
-    color:#155724;
-    border:none;
+    background-color: #ffffff;
+    color: #155724;
+    border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     text-align: center;
-    transition: baxkground-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
-.hr-logout-btn:hover{
-    background-color:#155724;
+
+.hr-logout-btn:hover {
+    background-color: #155724;
+    color: #ffffff;
 }

@@ -17,6 +17,7 @@
 
 /* Brand */
 
+
 .sidebar h2 {
     margin: 4px 0 42px;
     padding: 0 12px;
@@ -28,6 +29,29 @@
 }
 
 /* Navigation list */
+
+
+
+.sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-height: 48px;
+    padding: 13px 15px;
+
+   
+    font-size: 15px;
+    font-weight: 500;
+
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
 
 .sidebar ul {
     display: flex;
@@ -41,28 +65,8 @@
 
 /* Navigation items */
 
-.sidebar li {
-    display: flex;
-    align-items: center;
-    gap: 15px;
 
-    min-height: 48px;
-    padding: 13px 15px;
 
-    color: #d5dfed;
-    font-size: 15px;
-    font-weight: 500;
-
-    border-radius: 10px;
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-
-/* Icons */
 
 .sidebar li svg {
     flex-shrink: 0;
@@ -78,6 +82,7 @@
     transform: translateX(3px);
 }
 
+
 /* Active navigation item */
 
 .sidebar li:first-child {
@@ -85,8 +90,11 @@
     background: #3478f6;
     font-weight: 650;
     box-shadow: 0 5px 14px rgba(52, 120, 246, 0.22);
+
 }
 
+
+/* Logout */
 /* Logout */
 
 .sidebar li:last-child {
@@ -94,31 +102,13 @@
     color: #ffb7b7;
 }
 
+
 .sidebar li:last-child:hover {
     color: #ffffff;
     background: rgba(224, 82, 82, 0.18);
 }
 
-/* Responsive layout */
 
-@media (max-width: 768px) {
-    .sidebar {
-        width: 210px;
-        min-width: 210px;
-        padding: 25px 12px;
-    }
-
-    .sidebar h2 {
-        font-size: 21px;
-        margin-bottom: 30px;
-    }
-
-    .sidebar li {
-        gap: 10px;
-        padding: 12px 10px;
-        font-size: 14px;
-    }
-}
 
 @media (max-width: 480px) {
     .sidebar {
@@ -136,17 +126,19 @@
         font-size: 0;
         text-align: center;
     }
+    
 
     .sidebar h2::after {
-        content: "NC";
+      
         font-size: 20px;
         font-weight: 800;
     }
-
+    
     .sidebar ul {
         width: 100%;
         align-items: center;
     }
+    
 
     .sidebar li {
         justify-content: center;
@@ -155,12 +147,13 @@
         font-size: 0;
         gap: 0;
     }
+    
 
     .sidebar li svg {
         width: 20px;
         font-size: 19px;
     }
-
+    
     .sidebar li:hover {
         transform: none;
     }

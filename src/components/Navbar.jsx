@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -26,7 +27,11 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="logo">
-        <Link to="/" className="logo-link" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/"
+          className="logo-link"
+          onClick={() => setMenuOpen(false)}
+        >
           <img
             src={logo}
             alt="Nation Cabs Logo"
@@ -57,15 +62,51 @@ function Navbar() {
             Contact
           </a>
         </li>
+
+        <div className="mobile-buttons">
+          <Link
+            to="/login"
+            className="login-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Login
+          </Link>
+
+          <Link
+            to="/signup"
+            className="register-btn"
+            onClick={() => setMenuOpen(false)}
+          >
+            Register
+          </Link>
+
+          <button
+            type="button"
+            className="logout-btn"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </ul>
 
       <div className="nav-buttons">
-        <Link to="/login" className="login-btn" onClick={() => setMenuOpen(false)}>
+        <Link
+          to="/login"
+          className="login-btn"
+          onClick={() => setMenuOpen(false)}
+        >
           Login
         </Link>
-        <Link to="/signup" className="register-btn" onClick={() => setMenuOpen(false)}>
+
+        <Link
+          to="/signup"
+          className="register-btn"
+          onClick={() => setMenuOpen(false)}
+        >
           Sign Up
         </Link>
+
         <button
           type="button"
           className="logout-btn"
@@ -75,7 +116,10 @@ function Navbar() {
         </button>
       </div>
 
-      <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+      <div
+        className="menu-icon"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
         {menuOpen ? <FaTimes /> : <FaBars />}
       </div>
     </nav>
@@ -83,3 +127,4 @@ function Navbar() {
 }
 
 export default Navbar;
+
