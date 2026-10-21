@@ -8,7 +8,7 @@
     border-radius: 12px;
     margin-bottom: 25px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-bottom: 3px solid #0b2d50;
+    border-left: 5px solid #291cdb;
 }
 
 .header-text h1 {
@@ -19,7 +19,7 @@
 }
 
 .header-text p {
-    color: #1c5cdb;
+    color: #291cdb;
     font-size: 15px;
     margin: 0;
 }

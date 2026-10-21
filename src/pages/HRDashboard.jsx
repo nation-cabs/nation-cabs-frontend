@@ -10,6 +10,22 @@ const API = import.meta.env.VITE_API;
 const HRDashboard = () => {
 const navigate = useNavigate();
 
+const handleLogout = () => {
+    const confirmLogout = window.confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if (confirmLogout) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        navigate("/login");
+    
+    }
+    
+};
+
+
 const [applications, setApplications] = useState([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState("");
@@ -47,6 +63,8 @@ const fetchApplications = async () => {
 useEffect(() => {
     fetchApplications();
 }, []);
+
+
 
 const reviewApplication = (id) => {
     navigate(`/hr-dashboard/applications/${id}`);
@@ -107,6 +125,14 @@ return (
                     onClick={() => setActiveSection("rejected")}
                 >
                     Rejected Applications
+                </button>
+
+                <button
+                    type="button"
+                    className="hr-logout-btn"
+                    onClick={handleLogout}
+                    >
+                        Logout
                 </button>
             </nav>
         </aside>
@@ -178,7 +204,6 @@ return (
         </main>
     </div>
 );
-
 
 };
 

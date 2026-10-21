@@ -7,10 +7,9 @@
     margin: 30px auto;
     padding: 30px;
     background-color: #ffffff;
-    border: 2px solid #0b2d50;
     border-radius: 16px;
     box-sizing: border-box;
-    border-left: 5px solid #0d10b8;
+    border-left: 5px solid #1e14b1;
 }
 
 /* Form heading */
@@ -72,12 +71,12 @@
 
 /* Book Ride button */
 .booking-card button[type="submit"] {
-    width: 100%;
+    width: 25%;
     padding: 14px 20px;
     margin-top: 5px;
-    background-color: #0b2d50;
+    background-color: #077916;
     color: #ffffff;
-    border: 2px solid #0b2d50;
+    border: 2px solid #55c911;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
@@ -88,8 +87,8 @@
 
 /* Button hover effect */
 .booking-card button[type="submit"]:hover {
-    background-color: #164e78;
-    border-color: #164e78;
+    background-color: #66ad72;
+    border-color: #14b12e;
     transform: translateY(-1px);
 }
 
