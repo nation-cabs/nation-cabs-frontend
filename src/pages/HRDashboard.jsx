@@ -1,11 +1,12 @@
 
+
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/HRDashboard.css";
 import DriverApplicationCard from "../components/DriverApplicationCard";
 
-const API = import.meta.env.VITE_API;
+const API = import.meta.env.VITE_API || "http://localhost:5000/api";
 
 const HRDashboard = () => {
     const navigate = useNavigate();
@@ -54,6 +55,7 @@ const HRDashboard = () => {
             setApplications(response.data.applications || []);
         } catch (err) {
             console.error("ERROR FETCHING APPLICATIONS:", err);
+
             setError(
                 err.response?.data?.message ||
                 "Failed to load driver applications."
@@ -82,7 +84,11 @@ const HRDashboard = () => {
 
             setApprovedApplications(response.data.applications || []);
         } catch (err) {
-            console.error("ERROR FETCHING APPROVED APPLICATIONS:", err);
+            console.error(
+                "ERROR FETCHING APPROVED APPLICATIONS:",
+                err
+            );
+
             setError(
                 err.response?.data?.message ||
                 "Failed to load approved applications."
@@ -111,7 +117,11 @@ const HRDashboard = () => {
 
             setRejectedApplications(response.data.applications || []);
         } catch (err) {
-            console.error("ERROR FETCHING REJECTED APPLICATIONS:", err);
+            console.error(
+                "ERROR FETCHING REJECTED APPLICATIONS:",
+                err
+            );
+
             setError(
                 err.response?.data?.message ||
                 "Failed to load rejected applications."
@@ -121,15 +131,23 @@ const HRDashboard = () => {
         }
     }, []);
 
+    // Load dashboard data when the page opens
     useEffect(() => {
         fetchApplications();
-    }, [fetchApplications]);
+        fetchApprovedApplications();
+        fetchRejectedApplications();
+    }, [
+        fetchApplications,
+        fetchApprovedApplications,
+        fetchRejectedApplications,
+    ]);
 
     // Navigate to application review
     const reviewApplication = (id) => {
         navigate(`/hr-dashboard/applications/${id}`);
     };
 
+    // Change dashboard section
     const openSection = (section) => {
         setError("");
         setActiveSection(section);
@@ -151,7 +169,9 @@ const HRDashboard = () => {
                 <nav>
                     <button
                         type="button"
-                        className={activeSection === "dashboard" ? "active" : ""}
+                        className={
+                            activeSection === "dashboard" ? "active" : ""
+                        }
                         onClick={() => openSection("dashboard")}
                     >
                         Dashboard
@@ -159,7 +179,9 @@ const HRDashboard = () => {
 
                     <button
                         type="button"
-                        className={activeSection === "applications" ? "active" : ""}
+                        className={
+                            activeSection === "applications" ? "active" : ""
+                        }
                         onClick={() => openSection("applications")}
                     >
                         New Applications
@@ -167,7 +189,9 @@ const HRDashboard = () => {
 
                     <button
                         type="button"
-                        className={activeSection === "approved" ? "active" : ""}
+                        className={
+                            activeSection === "approved" ? "active" : ""
+                        }
                         onClick={() => openSection("approved")}
                     >
                         Approved Drivers
@@ -175,7 +199,9 @@ const HRDashboard = () => {
 
                     <button
                         type="button"
-                        className={activeSection === "rejected" ? "active" : ""}
+                        className={
+                            activeSection === "rejected" ? "active" : ""
+                        }
                         onClick={() => openSection("rejected")}
                     >
                         Rejected Applications
@@ -195,6 +221,7 @@ const HRDashboard = () => {
                 {error && (
                     <div className="hr-error" role="alert">
                         <p>{error}</p>
+
                         <button
                             type="button"
                             onClick={() => openSection(activeSection)}

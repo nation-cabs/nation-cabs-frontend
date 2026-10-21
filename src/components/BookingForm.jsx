@@ -96,12 +96,13 @@ const handleSubmit = async (e) => {
                 />
 
                 <input
-                    type="text"
-                    name="dropoff_location"
-                    placeholder="Destination"
-                    onChange={handleChange}
-                    required
-                />
+    type="text"
+    name="dropoff_location"
+    placeholder="Destination"
+    value={formData.dropoff_location}
+    onChange={handleChange}
+    required
+/>
 
                 <input
                     type="datetime-local"

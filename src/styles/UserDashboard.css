@@ -14,7 +14,6 @@ body{
     display:flex;
     min-height:100vh;
     background-image:none;
-    background-image:none;
 }
 
 
@@ -84,15 +83,15 @@ body{
 
 
 
-.quick-action {
-    background: #1e14b1;
-    color: #fff;
-    padding: 35px;
-    border-radius: 18px;
-    margin-bottom: 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.quick-action{
+    background:#0e067d;
+    color:#fff;
+    padding:35px;
+    border-radius:18px;
+    margin-bottom:35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .quick-action button{
@@ -139,12 +138,18 @@ body{
 .history{
     border-left: 2px solid #15966a;
 }
+.history{
+    border-left: 2px solid #15966a;
+}
 
 
 .booking-card form{
     display:flex;
     flex-direction:column;
     gap:18px;
+}
+.booking-card{
+    border-left: 2px solid #090cc5;
 }
 .booking-card{
     border-left: 2px solid #090cc5;
@@ -189,22 +194,29 @@ body{
 
 .booking-card button{
 
-    background: #1e14b1;
-    color: #fff;
-    border: none;
-    padding: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+    background:#2c1b8f;
+
+    color:#fff;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
 }
 
 
 
 .booking-card button:hover{
 
-    background:#635cd1;
     background:#635cd1;
 
     transform:translateY(-2px);
@@ -241,12 +253,15 @@ body{
 
 .history th{
 
-    background: #1e14b1;
-    color: #fff;
-    padding: 15px;
-    text-align: left;
-}
+    background:#2c1b8f;
 
+    color:#fff;
+
+    padding:15px;
+
+    text-align:left;
+
+}
 
 .history td{
 
@@ -659,35 +674,4 @@ width:100%;
     .stat-card h2 {
         font-size: 28px;
     }
-}
-
-/* FIX: Dashboard card descriptions */
-.stats .stat-card .stat-description {
-    font-size: 13px !important;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: center;
-    margin: 0;
-    padding: 0 4px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
-    color: #887ea3;
-}
-
-/* Prevent card content from overflowing */
-.stats .stat-card {
-    min-width: 0;
-    overflow: hidden;
-    align-items: stretch;
-}
-
-/* Keep the numbers compact */
-.stats .stat-card h2 {
-    font-size: 24px !important;
-    line-height: 1.2;
-    margin: 6px 0;
 }

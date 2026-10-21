@@ -6,7 +6,7 @@ import DashboardCards from "../components/DashboardCards";
 import BookingForm from "../components/BookingForm";
 import UpcomingBooking from "../components/UpcomingBooking";
 import BookingHistory from "../components/BookingHistory";
-
+import UserProfile from "../components/UserProfile.jsx";
 import "../styles/UserDashboard.css";
 
 function UserDashboard() {
@@ -69,7 +69,11 @@ function UserDashboard() {
                     <BookingHistory
                         refreshKey={bookingRefreshKey}
                     />
+                    
                 )}
+                {activeSection === "profile" && (
+    <UserProfile />
+)}
             </div>
         </div>
     );

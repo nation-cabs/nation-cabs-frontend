@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import "../styles/DriverApplication.css";
 import axios from "axios";
@@ -14,62 +15,46 @@ function DriverApplication() {
         phone: "",
         dateOfBirth: "",
         gender: "",
-
         province: "",
         city: "",
         address: "",
-
         licenseNumber: "",
         licenseExpiry: "",
-
         pdpNumber: "",
         pdpExpiry: "",
-
         drivingExperience: "",
-
         emergencyName: "",
         emergencyRelationship: "",
         emergencyPhone: "",
-
         idDocument: null,
         licenseDocument: null,
         pdpDocument: null,
         proofOfAddress: null,
         driverProfile: null,
         cv: null,
-
         agreeInformation: false,
         agreeBackground: false,
-        agreeTerms: false
+        agreeTerms: false,
     });
 
-    // ==========================================
-    // HANDLE FORM CHANGES
-    // ==========================================
+    const [submitting, setSubmitting] = useState(false);
+
+    // Handle form changes and file uploads
     const handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
 
-        // ==========================================
-        // FILE INPUT
-        // ==========================================
         if (type === "file") {
             const file = files?.[0];
 
-            // No file selected
-            if (!file) {
-                return;
-            }
+            if (!file) return;
 
-            // ==========================================
-            // DOCUMENT VALIDATION
-            // ==========================================
             const documentFields = [
                 "idDocument",
                 "licenseDocument",
                 "pdpDocument",
                 "proofOfAddress",
                 "driverProfile",
-                "cv"
+                "cv",
             ];
 
             if (documentFields.includes(name)) {
@@ -78,300 +63,108 @@ function DriverApplication() {
                     file.name.toLowerCase().endsWith(".pdf");
 
                 if (!isPDF) {
-                    alert(
-                        "Only PDF files are allowed for this document."
-                    );
-
+                    alert("Only PDF files are allowed.");
                     e.target.value = "";
                     return;
                 }
 
-                const maxSize = 20 * 1024 * 1024; // 20 MB
+                const maxSize = 20 * 1024 * 1024;
 
                 if (file.size > maxSize) {
-                    alert(
-                        "PDF file must not exceed 20 MB."
-                    );
-
+                    alert("PDF files must not exceed 20 MB.");
                     e.target.value = "";
                     return;
                 }
             }
 
-            // ==========================================
-            // PROFILE PHOTO VALIDATION
-            // ==========================================
-           
-            // ==========================================
-            // SAVE FILE TO STATE
-            // ==========================================
             setFormData((prev) => ({
                 ...prev,
-                [name]: file
+                [name]: file,
             }));
-
-            console.log(
-                `Selected ${name}:`,
-                {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size
-                }
-            );
 
             return;
         }
 
-        // ==========================================
-        // TEXT / CHECKBOX INPUTS
-        // ==========================================
         setFormData((prev) => ({
             ...prev,
-            [name]: type === "checkbox" ? checked : value
+            [name]: type === "checkbox" ? checked : value,
         }));
     };
 
-    // ==========================================
-    // HANDLE SUBMIT
-    // ==========================================
+    // Submit driver application
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const API = import.meta.env.VITE_API;
+        if (
+            !formData.agreeInformation ||
+            !formData.agreeBackground ||
+            !formData.agreeTerms
+        ) {
+            alert("Please accept all three agreements.");
+            return;
+        }
+
+        const API =
+            import.meta.env.VITE_API || "http://localhost:5000/api";
+
+        const data = new FormData();
+
+        Object.entries(formData).forEach(([key, value]) => {
+            if (value instanceof File) {
+                data.append(key, value);
+            } else if (value !== null && value !== undefined) {
+                data.append(key, String(value));
+            }
+        });
 
         try {
-            console.log(
-                "========== FORM STATE =========="
-            );
+            setSubmitting(true);
 
-            console.log(formData);
-
-            // ==========================================
-            // CREATE FORMDATA
-            // ==========================================
-            const data = new FormData();
-
-            // ==========================================
-            // TEXT FIELDS
-            // ==========================================
-            data.append("firstName", formData.firstName);
-            data.append("lastName", formData.lastName);
-            data.append("email", formData.email);
-            data.append("phone", formData.phone);
-            data.append("dateOfBirth", formData.dateOfBirth);
-            data.append("gender", formData.gender);
-
-            data.append("province", formData.province);
-            data.append("city", formData.city);
-            data.append("address", formData.address);
-
-            data.append(
-                "licenseNumber",
-                formData.licenseNumber
-            );
-
-            data.append(
-                "licenseExpiry",
-                formData.licenseExpiry
-            );
-
-            data.append(
-                "pdpNumber",
-                formData.pdpNumber
-            );
-
-            data.append(
-                "pdpExpiry",
-                formData.pdpExpiry
-            );
-
-            data.append(
-                "drivingExperience",
-                formData.drivingExperience
-            );
-
-            data.append(
-                "emergencyName",
-                formData.emergencyName
-            );
-
-            data.append(
-                "emergencyRelationship",
-                formData.emergencyRelationship
-            );
-
-            data.append(
-                "emergencyPhone",
-                formData.emergencyPhone
-            );
-
-            // ==========================================
-            // CHECKBOXES
-            // ==========================================
-            data.append(
-                "agreeInformation",
-                String(formData.agreeInformation)
-            );
-
-            data.append(
-                "agreeBackground",
-                String(formData.agreeBackground)
-            );
-
-            data.append(
-                "agreeTerms",
-                String(formData.agreeTerms)
-            );
-
-            // ==========================================
-            // FILES
-            // ==========================================
-
-            if (formData.idDocument) {
-                data.append(
-                    "idDocument",
-                    formData.idDocument
-                );
-            }
-
-            if (formData.licenseDocument) {
-                data.append(
-                    "licenseDocument",
-                    formData.licenseDocument
-                );
-            }
-
-            if (formData.pdpDocument) {
-                data.append(
-                    "pdpDocument",
-                    formData.pdpDocument
-                );
-            }
-
-            if (formData.proofOfAddress) {
-                data.append(
-                    "proofOfAddress",
-                    formData.proofOfAddress
-                );
-            }
-
-            if (formData.driverProfile) {
-                data.append(
-                    "driverProfile",
-                    formData.driverProfile
-                );
-            }
-
-            // ==========================================
-            // CV
-            // ==========================================
-            // IMPORTANT:
-            // Your state property is "cv", NOT "cv_document".
-            if (formData.cv) {
-                data.append(
-                    "cv",
-                    formData.cv
-                );
-            }
-
-            // ==========================================
-            // DEBUG FORMDATA
-            // ==========================================
-            console.log(
-                "========== FORMDATA =========="
-            );
-
-            for (const [key, value] of data.entries()) {
-                if (value instanceof File) {
-                    console.log(key, {
-                        name: value.name,
-                        type: value.type,
-                        size: value.size
-                    });
-                } else {
-                    console.log(key, value);
-                }
-            }
-
-            console.log(
-                "=============================="
-            );
-
-            // ==========================================
-            // SEND REQUEST
-            // ==========================================
             const response = await axios.post(
                 `${API}/driver-applications`,
                 data
             );
 
-            console.log(
-                "Application saved:",
-                response.data
-            );
+            console.log("Application saved:", response.data);
 
-            alert(
-                "Application submitted successfully!"
-            );
-
+            alert("Application submitted successfully!");
             navigate("/");
-
         } catch (error) {
             console.error(
                 "APPLICATION SUBMISSION ERROR:",
                 error
             );
 
-            console.error(
-                "STATUS:",
-                error.response?.status
-            );
-
-            console.error(
-                "SERVER RESPONSE:",
-                error.response?.data
-            );
-
-            console.error(
-                "MESSAGE:",
-                error.message
-            );
+            console.error("STATUS:", error.response?.status);
+            console.error("SERVER RESPONSE:", error.response?.data);
 
             alert(
                 error.response?.data?.message ||
                 "Failed to submit application. Please try again."
             );
+        } finally {
+            setSubmitting(false);
         }
     };
 
     return (
         <div className="driver-application">
-
             <div className="application-card">
-
-                <h1>
-                    Become a Nation Cabs Driver
-                </h1>
+                <h1>Become a Nation Cabs Driver</h1>
 
                 <p>
-                    Complete the application below. Our
-                    recruitment team will review your
-                    application and contact you.
+                    Complete the application below. Our recruitment
+                    team will review your application and contact you.
                 </p>
 
                 <form onSubmit={handleSubmit}>
-
-                    {/* ==========================================
-                        PERSONAL INFORMATION
-                    ========================================== */}
-
                     <h2>Personal Information</h2>
 
                     <div className="form-grid">
-
                         <input
                             name="firstName"
                             placeholder="First Name"
+                            value={formData.firstName}
                             onChange={handleChange}
                             required
                         />
@@ -379,6 +172,7 @@ function DriverApplication() {
                         <input
                             name="lastName"
                             placeholder="Last Name"
+                            value={formData.lastName}
                             onChange={handleChange}
                             required
                         />
@@ -387,62 +181,53 @@ function DriverApplication() {
                             type="email"
                             name="email"
                             placeholder="Email"
+                            value={formData.email}
                             onChange={handleChange}
                             required
                         />
 
                         <input
+                            type="tel"
                             name="phone"
                             placeholder="Phone Number"
+                            value={formData.phone}
                             onChange={handleChange}
                             required
                         />
 
-                         <div className="date-field">
-        <label htmlFor="dateOfBirth">
-            Date of Birth
-        </label>
-
-        <input
-            type="date"
-            id="dateOfBirth"
-            name="dateOfBirth"
-            onChange={handleChange}
-            required
-        />
-    </div>
+                        <div className="date-field">
+                            <label htmlFor="dateOfBirth">
+                                Date of Birth
+                            </label>
+                            <input
+                                type="date"
+                                id="dateOfBirth"
+                                name="dateOfBirth"
+                                value={formData.dateOfBirth}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
                         <select
                             name="gender"
+                            value={formData.gender}
                             onChange={handleChange}
                             required
                         >
-                            <option value="">
-                                Gender
-                            </option>
-
-                            <option value="Male">
-                                Male
-                            </option>
-
-                            <option value="Female">
-                                Female
-                            </option>
+                            <option value="">Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
-
                     </div>
-
-                    {/* ==========================================
-                        ADDRESS
-                    ========================================== */}
 
                     <h2>Address</h2>
 
                     <div className="form-grid">
-
                         <input
                             name="province"
                             placeholder="Province"
+                            value={formData.province}
                             onChange={handleChange}
                             required
                         />
@@ -450,6 +235,7 @@ function DriverApplication() {
                         <input
                             name="city"
                             placeholder="City"
+                            value={formData.city}
                             onChange={handleChange}
                             required
                         />
@@ -458,83 +244,76 @@ function DriverApplication() {
                             className="full-width"
                             name="address"
                             placeholder="Residential Address"
+                            value={formData.address}
                             onChange={handleChange}
                             required
                         />
-
                     </div>
-
-                    {/* ==========================================
-                        DRIVER INFORMATION
-                    ========================================== */}
 
                     <h2>Driver Information</h2>
 
                     <div className="form-grid">
-
                         <input
                             name="licenseNumber"
                             placeholder="Driver's Licence Number"
+                            value={formData.licenseNumber}
                             onChange={handleChange}
                             required
                         />
 
                         <div className="date-field">
-        <label htmlFor="licenseExpiry">
-            Driver's Licence Expiry Date
-        </label>
-
-        <input
-            type="date"
-            id="licenseExpiry"
-            name="licenseExpiry"
-            onChange={handleChange}
-            required
-        />
-    </div>
+                            <label htmlFor="licenseExpiry">
+                                Driver's Licence Expiry Date
+                            </label>
+                            <input
+                                type="date"
+                                id="licenseExpiry"
+                                name="licenseExpiry"
+                                value={formData.licenseExpiry}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
 
                         <input
                             name="pdpNumber"
-                            placeholder="PDP Number"
+                            placeholder="PrDP Number"
+                            value={formData.pdpNumber}
                             onChange={handleChange}
                             required
                         />
 
-                          <div className="date-field">
-        <label htmlFor="pdpExpiry">
-            PrDP Expiry Date
-        </label>
-
-        <input
-            type="date"
-            id="pdpExpiry"
-            name="pdpExpiry"
-            onChange={handleChange}
-        />
-    </div>
+                        <div className="date-field">
+                            <label htmlFor="pdpExpiry">
+                                PrDP Expiry Date
+                            </label>
+                            <input
+                                type="date"
+                                id="pdpExpiry"
+                                name="pdpExpiry"
+                                value={formData.pdpExpiry}
+                                onChange={handleChange}
+                            />
+                        </div>
 
                         <input
                             type="number"
                             name="drivingExperience"
                             placeholder="Years of Driving Experience"
                             min="0"
+                            value={formData.drivingExperience}
                             onChange={handleChange}
                             required
                         />
-
                     </div>
-
-                    {/* ==========================================
-                        EMERGENCY CONTACT
-                    ========================================== */}
 
                     <h2>Emergency Contact</h2>
 
                     <div className="form-grid">
-
                         <input
                             name="emergencyName"
                             placeholder="Contact Name"
+                            value={formData.emergencyName}
                             onChange={handleChange}
                             required
                         />
@@ -542,30 +321,26 @@ function DriverApplication() {
                         <input
                             name="emergencyRelationship"
                             placeholder="Relationship"
+                            value={formData.emergencyRelationship}
                             onChange={handleChange}
                             required
                         />
 
                         <input
+                            type="tel"
                             name="emergencyPhone"
                             placeholder="Contact Number"
+                            value={formData.emergencyPhone}
                             onChange={handleChange}
                             required
                         />
-
                     </div>
-
-                    {/* ==========================================
-                        DOCUMENTS
-                    ========================================== */}
 
                     <h2>Upload Documents</h2>
 
                     <div className="upload-grid">
-
                         <label>
                             South African ID
-
                             <input
                                 type="file"
                                 name="idDocument"
@@ -577,7 +352,6 @@ function DriverApplication() {
 
                         <label>
                             Driver's Licence with PrDP
-
                             <input
                                 type="file"
                                 name="licenseDocument"
@@ -588,20 +362,18 @@ function DriverApplication() {
                         </label>
 
                         <label>
-                           Criminal Check Document
-
+                            Criminal Check Document
                             <input
                                 type="file"
                                 name="pdpDocument"
                                 accept=".pdf,application/pdf"
                                 onChange={handleChange}
-                                
+                                required
                             />
                         </label>
 
                         <label>
                             Proof of Address
-
                             <input
                                 type="file"
                                 name="proofOfAddress"
@@ -612,20 +384,18 @@ function DriverApplication() {
                         </label>
 
                         <label>
-                            E-Hailing  Profile
-
+                            E-Hailing Profile
                             <input
                                 type="file"
                                 name="driverProfile"
                                 accept=".pdf,application/pdf"
                                 onChange={handleChange}
-                                
+                                required
                             />
                         </label>
 
                         <label>
                             CV Document
-
                             <input
                                 type="file"
                                 name="cv"
@@ -633,74 +403,61 @@ function DriverApplication() {
                                 onChange={handleChange}
                                 required
                             />
-
                             <small>
                                 Upload your CV in PDF format only.
                                 Maximum size: 20 MB.
                             </small>
                         </label>
-
                     </div>
 
-                    {/* ==========================================
-                        AGREEMENTS
-                    ========================================== */}
-
                     <div className="checkboxes">
-
                         <label>
                             <input
                                 type="checkbox"
                                 name="agreeInformation"
+                                checked={formData.agreeInformation}
                                 onChange={handleChange}
                                 required
                             />
-
-                            I confirm that the information
-                            provided is accurate.
+                            I confirm that the information provided
+                            is accurate.
                         </label>
 
                         <label>
                             <input
                                 type="checkbox"
                                 name="agreeBackground"
+                                checked={formData.agreeBackground}
                                 onChange={handleChange}
                                 required
                             />
-
-                            I consent to a background
-                            verification.
+                            I consent to a background verification.
                         </label>
 
                         <label>
                             <input
                                 type="checkbox"
                                 name="agreeTerms"
+                                checked={formData.agreeTerms}
                                 onChange={handleChange}
                                 required
                             />
-
-                            I agree to the Nation Cabs
-                            Terms and Conditions.
+                            I agree to the Nation Cabs Terms and
+                            Conditions.
                         </label>
-
                     </div>
-
-                    {/* ==========================================
-                        SUBMIT
-                    ========================================== */}
 
                     <button
                         className="submit-btn"
                         type="submit"
+                        disabled={submitting}
                     >
-                        Submit Application
+                        {submitting
+                            ? "Submitting..."
+                            : "Submit Application"}
                     </button>
-
                 </form>
-
             </div>
-
         </div>
     );
 }

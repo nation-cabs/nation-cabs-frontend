@@ -1,4 +1,6 @@
 
+
+
 import { useCallback, useEffect, useState } from "react";
 import { getBookings } from "../services/bookingService.js";
 
@@ -67,7 +69,9 @@ function DashboardCards({ refreshKey = 0 }) {
 
             allBookings.forEach((booking) => {
                 const status = String(
-                    booking.booking_status ?? ""
+                    booking.booking_status ??
+                    booking.status ??
+                    ""
                 )
                     .trim()
                     .toLowerCase();
@@ -182,4 +186,3 @@ function DashboardCards({ refreshKey = 0 }) {
 }
 
 export default DashboardCards;
-

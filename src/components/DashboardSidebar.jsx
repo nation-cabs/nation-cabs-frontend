@@ -50,7 +50,8 @@ function DashboardSidebar({
 
     const logout = () => {
     localStorage.removeItem("userToken");
-  };
+    localStorage.removeItem("token");
+};
 
     const handleLogout = () => {
 

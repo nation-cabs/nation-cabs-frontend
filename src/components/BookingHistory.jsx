@@ -19,6 +19,7 @@ function BookingHistory({ refreshKey = 0 }) {
                 ? response
                 : response?.bookings ??
                   response?.data?.bookings ??
+                  response?.data?.data ??
                   response?.data ??
                   [];
 
@@ -30,32 +31,24 @@ function BookingHistory({ refreshKey = 0 }) {
 
             const history = allBookings
                 .filter((booking) => {
-                    // Exclude all pending bookings.
                     const status = String(
-                        booking.booking_status ?? ""
+                        booking.booking_status ?? booking.status ?? ""
                     ).trim().toLowerCase();
 
-                    if (status === "pending") {
-                        return false;
-                    }
+                    if (status === "pending") return false;
 
                     const finalStatuses = [
                         "completed",
                         "cancelled",
                         "canceled",
-                        "rejected"
+                        "rejected",
                     ];
 
-                    const pickupDate = new Date(
-                        booking.pickup_datetime
-                    );
-
+                    const pickupDate = new Date(booking.pickup_datetime);
                     const isPast =
                         !Number.isNaN(pickupDate.getTime()) &&
                         pickupDate < now;
 
-                    // Include completed/cancelled/rejected bookings
-                    // and other non-pending bookings with past dates.
                     return finalStatuses.includes(status) || isPast;
                 })
                 .sort(
@@ -95,10 +88,71 @@ function BookingHistory({ refreshKey = 0 }) {
             year: "numeric",
             hour: "2-digit",
             minute: "2-digit",
-            hour12: false
+            hour12: false,
         });
     };
-<<<<<<< HEAD
+
+    const getStatusStyle = (status) => {
+        const value = String(status || "N/A")
+            .trim()
+            .toLowerCase()
+            .replace(/[\s_]+/g, "-");
+
+        const styles = {
+            cancelled: {
+                backgroundColor: "#fee2e2",
+                color: "#b91c1c",
+                border: "1px solid #ef4444",
+            },
+            canceled: {
+                backgroundColor: "#fee2e2",
+                color: "#b91c1c",
+                border: "1px solid #ef4444",
+            },
+            rejected: {
+                backgroundColor: "#fee2e2",
+                color: "#b91c1c",
+                border: "1px solid #ef4444",
+            },
+            completed: {
+                backgroundColor: "#dcfce7",
+                color: "#15803d",
+                border: "1px solid #22c55e",
+            },
+            pending: {
+                backgroundColor: "#dbeafe",
+                color: "#1d4ed8",
+                border: "1px solid #3b82f6",
+            },
+            "driver-assigned": {
+                backgroundColor: "#fef3c7",
+                color: "#92400e",
+                border: "1px solid #f59e0b",
+            },
+        };
+
+        return {
+            display: "inline-block",
+            padding: "6px 10px",
+            borderRadius: "20px",
+            fontSize: "12px",
+            fontWeight: "700",
+            whiteSpace: "nowrap",
+            ...(
+                styles[value] || {
+                    backgroundColor: "#f3f4f6",
+                    color: "#374151",
+                    border: "1px solid #d1d5db",
+                }
+            ),
+        };
+    };
+
+    const formatStatus = (status) => {
+        return String(status || "N/A")
+            .replace(/[-_]+/g, " ")
+            .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    };
 
     return (
         <div className="booking-card history">
@@ -121,90 +175,7 @@ function BookingHistory({ refreshKey = 0 }) {
             {!loading && error && (
                 <div className="booking-error" role="alert">
                     <p>{error}</p>
-
-=======
-const getStatusStyle = (status) => {
-    const value = String(status || "N/A")
-        .trim()
-        .toLowerCase()
-        .replace(/[\s_]+/g, "-");
-
-    const styles = {
-        cancelled: {
-            backgroundColor: "#fee2e2",
-            color: "#b91c1c",
-            border: "1px solid #ef4444"
-        },
-        canceled: {
-            backgroundColor: "#fee2e2",
-            color: "#b91c1c",
-            border: "1px solid #ef4444"
-        },
-        rejected: {
-            backgroundColor: "#fee2e2",
-            color: "#b91c1c",
-            border: "1px solid #ef4444"
-        },
-        completed: {
-            backgroundColor: "#dcfce7",
-            color: "#15803d",
-            border: "1px solid #22c55e"
-        },
-        pending: {
-            backgroundColor: "#dbeafe",
-            color: "#1d4ed8",
-            border: "1px solid #3b82f6"
-        },
-        "driver-assigned": {
-            backgroundColor: "#fef3c7",
-            color: "#92400e",
-            border: "1px solid #f59e0b"
-        }
-    };
-
-    return {
-        display: "inline-block",
-        padding: "6px 10px",
-        borderRadius: "20px",
-        fontSize: "12px",
-        fontWeight: "700",
-        whiteSpace: "nowrap",
-        ...(
-            styles[value] || {
-                backgroundColor: "#f3f4f6",
-                color: "#374151",
-                border: "1px solid #d1d5db"
-            }
-        )
-    };
-};
-    return (
-        <div className="booking-card history">
-            <div className="history-header">
-                <h2>Booking History</h2>
-
-                <button
-                    type="button"
-                    onClick={fetchHistory}
-                    disabled={loading}
-                >
-                    {loading ? "Loading..." : "Refresh"}
-                </button>
-            </div>
-
-            {loading && (
-                <p role="status">Loading booking history...</p>
-            )}
-
-            {!loading && error && (
-                <div className="booking-error" role="alert">
-                    <p>{error}</p>
-
->>>>>>> e23bfaa (added colors to booking status)
-                    <button
-                        type="button"
-                        onClick={fetchHistory}
-                    >
+                    <button type="button" onClick={fetchHistory}>
                         Try Again
                     </button>
                 </div>
@@ -235,65 +206,60 @@ const getStatusStyle = (status) => {
                         </thead>
 
                         <tbody>
-                            {bookings.map((booking) => (
-                                <tr
-                                    key={
-                                        booking.id ??
-                                        booking.booking_id
-                                    }
-                                >
-                                    <td>
-                                        {booking.id
-                                            ? String(booking.id).slice(0, 8)
-                                            : booking.booking_id
-                                            ? String(
-                                                  booking.booking_id
-                                              ).slice(0, 8)
-                                            : "N/A"}
-                                    </td>
+                            {bookings.map((booking, index) => {
+                                const bookingId =
+                                    booking.id ?? booking.booking_id;
 
-                                    <td>
-                                        {formatDate(
-                                            booking.pickup_datetime
-                                        )}
-                                    </td>
+                                return (
+                                    <tr
+                                        key={bookingId ?? `${booking.pickup_datetime}-${index}`}
+                                    >
+                                        <td>
+                                            {bookingId != null
+                                                ? String(bookingId).slice(0, 8)
+                                                : "N/A"}
+                                        </td>
 
-                                    <td>
-                                        {booking.pickup_location || "N/A"}
-                                    </td>
+                                        <td>
+                                            {formatDate(booking.pickup_datetime)}
+                                        </td>
 
-                                    <td>
-                                        {booking.dropoff_location || "N/A"}
-                                    </td>
+                                        <td>
+                                            {booking.pickup_location || "N/A"}
+                                        </td>
 
-                                    <td>
-                                        {booking.vehicle_type || "Sedan"}
-                                    </td>
+                                        <td>
+                                            {booking.dropoff_location || "N/A"}
+                                        </td>
 
-<<<<<<< HEAD
-                                    <td>
-                                        {booking.booking_status || "N/A"}
-                                    </td>
-=======
-                                    
+                                        <td>
+                                            {booking.vehicle_type || "Sedan"}
+                                        </td>
 
-<td>
-    <span
-        className={`history-status ${String(
-            booking.booking_status || "N/A"
-        )
-            .trim()
-            .toLowerCase()
-            .replace(/[\s_]+/g, "-")}`}
-        style={getStatusStyle(booking.booking_status)}
-    >
-        {booking.booking_status || "N/A"}
-    </span>
-</td>
-
->>>>>>> e23bfaa (added colors to booking status)
-                                </tr>
-                            ))}
+                                        <td>
+                                            <span
+                                                className={`history-status ${String(
+                                                    booking.booking_status ??
+                                                    booking.status ??
+                                                    "N/A"
+                                                )
+                                                    .trim()
+                                                    .toLowerCase()
+                                                    .replace(/[\s_]+/g, "-")}`}
+                                                style={getStatusStyle(
+                                                    booking.booking_status ??
+                                                    booking.status
+                                                )}
+                                            >
+                                                {formatStatus(
+                                                    booking.booking_status ??
+                                                    booking.status
+                                                )}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
