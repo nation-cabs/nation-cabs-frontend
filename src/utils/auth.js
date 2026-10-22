@@ -1,13 +1,10 @@
+
 export const saveToken = (token) => {
-
-    localStorage.setItem("token", token);
-
+    localStorage.setItem("userToken", token);
 };
 
 export const getToken = () => {
-
-    return localStorage.getItem("token");
-
+    return localStorage.getItem("userToken");
 };
 
 export const saveUser = (user) => {
@@ -19,6 +16,6 @@ export const getUser = () => {
 };
 
 export const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userToken");
     localStorage.removeItem("user");
 };
