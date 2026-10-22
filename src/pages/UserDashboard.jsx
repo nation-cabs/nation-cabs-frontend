@@ -6,8 +6,13 @@ import DashboardCards from "../components/DashboardCards";
 import BookingForm from "../components/BookingForm";
 import UpcomingBooking from "../components/UpcomingBooking";
 import BookingHistory from "../components/BookingHistory";
+<<<<<<< HEAD
 import UserProfile from "../components/UserProfile.jsx";
+=======
+import UserProfile from "../components/UserProfile";
+>>>>>>> 3e34dd9 (Update dashboard, booking and authentication)
 import "../styles/UserDashboard.css";
+
 
 function UserDashboard() {
     const [bookingRefreshKey, setBookingRefreshKey] = useState(0);
@@ -71,9 +76,13 @@ function UserDashboard() {
                     />
                     
                 )}
+<<<<<<< HEAD
                 {activeSection === "profile" && (
     <UserProfile />
 )}
+=======
+                {activeSection === "profile" && <UserProfile />}
+>>>>>>> 3e34dd9 (Update dashboard, booking and authentication)
             </div>
         </div>
     );
