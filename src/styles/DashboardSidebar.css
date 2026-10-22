@@ -1,160 +1,133 @@
 
-/* ===== Nation Cabs Sidebar ===== */
 
 .sidebar {
     width: 260px;
     min-width: 260px;
+    height: 100vh;
     min-height: 100vh;
-    padding: 32px 18px;
+    background: #1e14b1;
+    color: #ffffff;
+    padding: 30px 18px;
     display: flex;
     flex-direction: column;
-
-    background: linear-gradient(180deg, #102b50 0%, #0b1f3a 100%);
-    color: #ffffff;
-
-    box-shadow: 5px 0 22px rgba(16, 43, 80, 0.08);
+    flex-shrink: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    box-sizing: border-box;
 }
 
-/* Brand */
-
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
 
 .sidebar h2 {
-    margin: 4px 0 42px;
-    padding: 0 12px;
-    font-style: italic;
     color: #ffffff;
-    font-size: 25px;
-    font-weight: 750;
-    letter-spacing: 0.3px;
-}
-
-/* Navigation list */
-
-
-
-.sidebar li {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-
-    min-height: 48px;
-    padding: 13px 15px;
-
-   
-    font-size: 15px;
-    font-weight: 500;
-
-    border-radius: 10px;
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+    font-size: 27px;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    margin: 12px 0 38px;
+    white-space: nowrap;
 }
 
 .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 12px;
+}
 
+
+.sidebar ul li {
+    width: 100%;
     margin: 0;
     padding: 0;
-    list-style: none;
+    border-radius: 10px;
 }
 
-/* Navigation items */
+
+.sidebar .sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-height: 54px;
+    padding: 14px 16px;
+    margin: 0;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    appearance: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
 
 
-
-
-.sidebar li svg {
+.sidebar .sidebar-link svg {
+    width: 19px;
+    height: 19px;
+    min-width: 19px;
     flex-shrink: 0;
-    width: 18px;
-    font-size: 17px;
-}
-
-/* Hover effect */
-
-.sidebar li:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.10);
-    transform: translateX(3px);
 }
 
 
-/* Active navigation item */
+.sidebar .sidebar-link span {
+    flex: 1;
+    min-width: 0;
+}
 
-.sidebar li:first-child {
+
+.sidebar .sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.14);
     color: #ffffff;
+}
+
+
+.sidebar ul li.active .sidebar-link {
     background: #3478f6;
-    font-weight: 650;
-    box-shadow: 0 5px 14px rgba(52, 120, 246, 0.22);
-
-}
-
-
-/* Logout */
-/* Logout */
-
-.sidebar li:last-child {
-    margin-top: 24px;
-    color: #ffb7b7;
-}
-
-
-.sidebar li:last-child:hover {
     color: #ffffff;
-    background: rgba(224, 82, 82, 0.18);
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 
+.sidebar .sidebar-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
 
-@media (max-width: 480px) {
+
+.sidebar ul li:last-child .sidebar-link {
+    margin-top: 12px;
+}
+
+
+@media (max-width: 768px) {
     .sidebar {
-        width: 72px;
-        min-width: 72px;
-        padding: 22px 9px;
-        align-items: center;
+        width: 220px;
+        min-width: 220px;
+        padding: 24px 12px;
     }
 
     .sidebar h2 {
-        width: 100%;
-        margin: 0 0 30px;
-        padding: 0;
-        overflow: hidden;
-        font-size: 0;
-        text-align: center;
+        font-size: 23px;
     }
-    
 
-    .sidebar h2::after {
-      
-        font-size: 20px;
-        font-weight: 800;
-    }
-    
-    .sidebar ul {
-        width: 100%;
-        align-items: center;
-    }
-    
-
-    .sidebar li {
-        justify-content: center;
-        width: 100%;
-        padding: 14px 0;
-        font-size: 0;
-        gap: 0;
-    }
-    
-
-    .sidebar li svg {
-        width: 20px;
-        font-size: 19px;
-    }
-    
-    .sidebar li:hover {
-        transform: none;
+    .sidebar .sidebar-link {
+        padding: 12px;
+        font-size: 14px;
+        gap: 10px;
     }
 }
+
