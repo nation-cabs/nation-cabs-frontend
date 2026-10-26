@@ -4,11 +4,18 @@ import axios from "axios";
 import "../styles/UserProfile.css";
 
 const API = import.meta.env.VITE_API || "http://localhost:5000/api";
+<<<<<<< HEAD
 const SERVER_URL = API.replace(/\/api\/?$/, "");
 
 function UserProfile() {
     const [user, setUser] = useState(null);
 
+=======
+
+function UserProfile() {
+    
+    const [user, setUser] = useState(null);
+>>>>>>> a16bb27 (Add user profile page and styling)
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
@@ -17,6 +24,7 @@ function UserProfile() {
     });
 
     const [editing, setEditing] = useState(false);
+<<<<<<< HEAD
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [uploadingPicture, setUploadingPicture] = useState(false);
@@ -38,12 +46,28 @@ function UserProfile() {
     };
 
     // Load the user's profile
+=======
+    const [picture, setPicture] = useState(null);
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
+
+    const token = localStorage.getItem("userToken");
+
+const authConfig = {
+    headers: {
+        Authorization: `Bearer ${token}`
+    }
+};
+
+>>>>>>> a16bb27 (Add user profile page and styling)
     const loadProfile = async () => {
         try {
             setLoading(true);
             setError("");
 
             const response = await axios.get(
+<<<<<<< HEAD
                 `${API}/profile`,
                 getAuthConfig()
             );
@@ -52,6 +76,14 @@ function UserProfile() {
 
             setUser(profile);
 
+=======
+    `${API}/users/profile`,
+    authConfig
+);
+
+            const profile = response.data.user;
+            setUser(profile);
+>>>>>>> a16bb27 (Add user profile page and styling)
             setFormData({
                 first_name: profile.first_name || "",
                 last_name: profile.last_name || "",
@@ -61,7 +93,11 @@ function UserProfile() {
         } catch (err) {
             setError(
                 err.response?.data?.message ||
+<<<<<<< HEAD
                 "Could not load your profile. Please sign in again if needed."
+=======
+                "Could not load your profile."
+>>>>>>> a16bb27 (Add user profile page and styling)
             );
         } finally {
             setLoading(false);
@@ -72,6 +108,7 @@ function UserProfile() {
         loadProfile();
     }, []);
 
+<<<<<<< HEAD
     // Preview selected picture and clean up temporary preview URLs
     useEffect(() => {
         if (!selectedPicture) {
@@ -181,10 +218,57 @@ function UserProfile() {
     // Upload profile picture to the backend
     const handlePictureUpload = async () => {
         if (!selectedPicture) {
+=======
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        setMessage("");
+        setError("");
+
+        try {
+           const response = await axios.put(
+    `${API}/users/profile/picture`,
+    formData,
+    {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`
+        }
+    }
+);
+
+setUser(response.data.user);
+setFormData({
+    first_name: response.data.user.first_name || "",
+    last_name: response.data.user.last_name || "",
+    email: response.data.user.email || "",
+    phone: response.data.user.phone || ""
+});
+setEditing(false);
+setMessage(response.data.message || "Profile updated successfully.");
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Could not update your profile."
+            );
+        }
+    };
+
+    const handlePictureUpload = async (e) => {
+        e.preventDefault();
+
+        if (!picture) {
+>>>>>>> a16bb27 (Add user profile page and styling)
             setError("Please choose a picture first.");
             return;
         }
 
+<<<<<<< HEAD
         setUploadingPicture(true);
         setError("");
         setMessage("");
@@ -225,20 +309,48 @@ function UserProfile() {
             );
         } finally {
             setUploadingPicture(false);
+=======
+        const data = new FormData();
+        data.append("profile_picture", picture);
+
+        setMessage("");
+        setError("");
+
+        try {
+            await axios.post(
+                `${API}/profile/picture`,
+                data,
+                authConfig
+            );
+
+            setPicture(null);
+            setMessage("Profile picture uploaded successfully.");
+            await loadProfile();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Could not upload your picture."
+            );
+>>>>>>> a16bb27 (Add user profile page and styling)
         }
     };
 
     if (loading) {
+<<<<<<< HEAD
         return (
             <div className="profile-page">
                 <p>Loading your profile...</p>
             </div>
         );
+=======
+        return <div className="profile-page">Loading profile...</div>;
+>>>>>>> a16bb27 (Add user profile page and styling)
     }
 
     if (!user) {
         return (
             <div className="profile-page">
+<<<<<<< HEAD
                 <div className="profile-card">
                     <h2>My Profile</h2>
 
@@ -252,10 +364,18 @@ function UserProfile() {
                         Try Again
                     </button>
                 </div>
+=======
+                <h2>My Profile</h2>
+                <p className="profile-error">{error}</p>
+                <button type="button" onClick={loadProfile}>
+                    Try Again
+                </button>
+>>>>>>> a16bb27 (Add user profile page and styling)
             </div>
         );
     }
 
+<<<<<<< HEAD
     const initials = (
         `${formData.first_name?.charAt(0) || ""}` +
         `${formData.last_name?.charAt(0) || ""}`
@@ -371,12 +491,100 @@ function UserProfile() {
                             </label>
                             <input
                                 id="first_name"
+=======
+    const pictureUrl = user.profile_picture
+        ? user.profile_picture.startsWith("http")
+            ? user.profile_picture
+            : `http://localhost:5000${user.profile_picture}`
+        : "";
+
+    return (
+        <section className="profile-page">
+            <div className="profile-heading">
+                <div>
+                    <h2>My Profile</h2>
+                    <p>View and manage your account information.</p>
+                </div>
+
+                {!editing && (
+                    <button
+                        type="button"
+                        className="profile-edit-btn"
+                        onClick={() => {
+                            setMessage("");
+                            setError("");
+                            setEditing(true);
+                        }}
+                    >
+                        Edit Profile
+                    </button>
+                )}
+            </div>
+
+            {message && (
+                <p className="profile-success">{message}</p>
+            )}
+
+            {error && (
+                <p className="profile-error">{error}</p>
+            )}
+
+            <div className="profile-card">
+                <div className="profile-picture-section">
+                    {pictureUrl ? (
+                        <img
+                            src={pictureUrl}
+                            alt="Profile"
+                            className="profile-avatar"
+                        />
+                    ) : (
+                        <div className="profile-avatar profile-avatar-placeholder">
+                            {user.first_name?.charAt(0)?.toUpperCase()}
+                        </div>
+                    )}
+
+                    <div>
+                        <h3>
+                            {user.first_name} {user.last_name}
+                        </h3>
+                        <p>{user.email}</p>
+
+                        <form onSubmit={handlePictureUpload}>
+                            <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                onChange={(e) =>
+                                    setPicture(e.target.files?.[0] || null)
+                                }
+                            />
+
+                            <button
+                                type="submit"
+                                className="profile-save-btn"
+                            >
+                                Upload Picture
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h3>Personal Information</h3>
+
+                <form onSubmit={handleSave}>
+                    <div className="profile-fields">
+                        <label>
+                            First Name
+                            <input
+>>>>>>> a16bb27 (Add user profile page and styling)
                                 name="first_name"
                                 value={formData.first_name}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
+<<<<<<< HEAD
                         </div>
 
                         <div className="profile-field">
@@ -385,12 +593,20 @@ function UserProfile() {
                             </label>
                             <input
                                 id="last_name"
+=======
+                        </label>
+
+                        <label>
+                            Last Name
+                            <input
+>>>>>>> a16bb27 (Add user profile page and styling)
                                 name="last_name"
                                 value={formData.last_name}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
+<<<<<<< HEAD
                         </div>
 
                         <div className="profile-field">
@@ -401,11 +617,21 @@ function UserProfile() {
                                 id="email"
                                 name="email"
                                 type="email"
+=======
+                        </label>
+
+                        <label>
+                            Email Address
+                            <input
+                                type="email"
+                                name="email"
+>>>>>>> a16bb27 (Add user profile page and styling)
                                 value={formData.email}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
+<<<<<<< HEAD
                         </div>
 
                         <div className="profile-field">
@@ -422,6 +648,41 @@ function UserProfile() {
                                 placeholder="Enter your phone number"
                             />
                         </div>
+=======
+                        </label>
+
+                        <label>
+                            Phone Number
+                            <input
+                                type="tel"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                disabled={!editing}
+                                required
+                            />
+                        </label>
+
+                        <label>
+                            Account Type
+                            <input
+                                value={user.role || "customer"}
+                                disabled
+                            />
+                        </label>
+
+                        <label>
+                            Email Verification
+                            <input
+                                value={
+                                    Number(user.is_verified) === 1
+                                        ? "Verified"
+                                        : "Not verified"
+                                }
+                                disabled
+                            />
+                        </label>
+>>>>>>> a16bb27 (Add user profile page and styling)
                     </div>
 
                     {editing && (
@@ -429,28 +690,54 @@ function UserProfile() {
                             <button
                                 type="submit"
                                 className="profile-save-btn"
+<<<<<<< HEAD
                                 disabled={saving}
                             >
                                 {saving
                                     ? "Saving..."
                                     : "Save Changes"}
+=======
+                            >
+                                Save Changes
+>>>>>>> a16bb27 (Add user profile page and styling)
                             </button>
 
                             <button
                                 type="button"
                                 className="profile-cancel-btn"
+<<<<<<< HEAD
                                 onClick={handleCancel}
                                 disabled={saving}
+=======
+                                onClick={() => {
+                                    setFormData({
+                                        first_name: user.first_name || "",
+                                        last_name: user.last_name || "",
+                                        email: user.email || "",
+                                        phone: user.phone || ""
+                                    });
+                                    setEditing(false);
+                                    setError("");
+                                }}
+>>>>>>> a16bb27 (Add user profile page and styling)
                             >
                                 Cancel
                             </button>
                         </div>
                     )}
                 </form>
+<<<<<<< HEAD
             </section>
         </div>
+=======
+            </div>
+        </section>
+>>>>>>> a16bb27 (Add user profile page and styling)
     );
 }
 
 export default UserProfile;
+<<<<<<< HEAD
  
+=======
+>>>>>>> a16bb27 (Add user profile page and styling)
