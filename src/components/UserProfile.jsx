@@ -1,21 +1,13 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/UserProfile.css";
 
 const API = import.meta.env.VITE_API || "http://localhost:5000/api";
-<<<<<<< HEAD
 const SERVER_URL = API.replace(/\/api\/?$/, "");
 
 function UserProfile() {
     const [user, setUser] = useState(null);
 
-=======
-
-function UserProfile() {
-    
-    const [user, setUser] = useState(null);
->>>>>>> a16bb27 (Add user profile page and styling)
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
@@ -24,15 +16,17 @@ function UserProfile() {
     });
 
     const [editing, setEditing] = useState(false);
-<<<<<<< HEAD
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [uploadingPicture, setUploadingPicture] = useState(false);
+
     const [selectedPicture, setSelectedPicture] = useState(null);
     const [picturePreview, setPicturePreview] = useState("");
+
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
 
+    // Authentication configuration
     const getAuthConfig = () => {
         const token =
             localStorage.getItem("token") ||
@@ -46,28 +40,12 @@ function UserProfile() {
     };
 
     // Load the user's profile
-=======
-    const [picture, setPicture] = useState(null);
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(true);
-
-    const token = localStorage.getItem("userToken");
-
-const authConfig = {
-    headers: {
-        Authorization: `Bearer ${token}`
-    }
-};
-
->>>>>>> a16bb27 (Add user profile page and styling)
     const loadProfile = async () => {
         try {
             setLoading(true);
             setError("");
 
             const response = await axios.get(
-<<<<<<< HEAD
                 `${API}/profile`,
                 getAuthConfig()
             );
@@ -76,14 +54,6 @@ const authConfig = {
 
             setUser(profile);
 
-=======
-    `${API}/users/profile`,
-    authConfig
-);
-
-            const profile = response.data.user;
-            setUser(profile);
->>>>>>> a16bb27 (Add user profile page and styling)
             setFormData({
                 first_name: profile.first_name || "",
                 last_name: profile.last_name || "",
@@ -93,11 +63,7 @@ const authConfig = {
         } catch (err) {
             setError(
                 err.response?.data?.message ||
-<<<<<<< HEAD
                 "Could not load your profile. Please sign in again if needed."
-=======
-                "Could not load your profile."
->>>>>>> a16bb27 (Add user profile page and styling)
             );
         } finally {
             setLoading(false);
@@ -108,8 +74,7 @@ const authConfig = {
         loadProfile();
     }, []);
 
-<<<<<<< HEAD
-    // Preview selected picture and clean up temporary preview URLs
+    // Preview selected picture
     useEffect(() => {
         if (!selectedPicture) {
             setPicturePreview("");
@@ -117,11 +82,15 @@ const authConfig = {
         }
 
         const previewUrl = URL.createObjectURL(selectedPicture);
+
         setPicturePreview(previewUrl);
 
-        return () => URL.revokeObjectURL(previewUrl);
+        return () => {
+            URL.revokeObjectURL(previewUrl);
+        };
     }, [selectedPicture]);
 
+    // Handle changes to profile fields
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -154,14 +123,25 @@ const authConfig = {
             }));
 
             setFormData({
-                first_name: updatedUser.first_name ?? formData.first_name,
-                last_name: updatedUser.last_name ?? formData.last_name,
-                email: updatedUser.email ?? formData.email,
-                phone: updatedUser.phone ?? formData.phone
+                first_name:
+                    updatedUser.first_name ?? formData.first_name,
+
+                last_name:
+                    updatedUser.last_name ?? formData.last_name,
+
+                email:
+                    updatedUser.email ?? formData.email,
+
+                phone:
+                    updatedUser.phone ?? formData.phone
             });
 
             setEditing(false);
-            setMessage("Your profile has been updated successfully.");
+
+            setMessage(
+                response.data.message ||
+                "Your profile has been updated successfully."
+            );
         } catch (err) {
             setError(
                 err.response?.data?.message ||
@@ -215,60 +195,13 @@ const authConfig = {
         setMessage("");
     };
 
-    // Upload profile picture to the backend
+    // Upload profile picture
     const handlePictureUpload = async () => {
         if (!selectedPicture) {
-=======
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSave = async (e) => {
-        e.preventDefault();
-        setMessage("");
-        setError("");
-
-        try {
-           const response = await axios.put(
-    `${API}/users/profile/picture`,
-    formData,
-    {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`
-        }
-    }
-);
-
-setUser(response.data.user);
-setFormData({
-    first_name: response.data.user.first_name || "",
-    last_name: response.data.user.last_name || "",
-    email: response.data.user.email || "",
-    phone: response.data.user.phone || ""
-});
-setEditing(false);
-setMessage(response.data.message || "Profile updated successfully.");
-        } catch (err) {
-            setError(
-                err.response?.data?.message ||
-                "Could not update your profile."
-            );
-        }
-    };
-
-    const handlePictureUpload = async (e) => {
-        e.preventDefault();
-
-        if (!picture) {
->>>>>>> a16bb27 (Add user profile page and styling)
             setError("Please choose a picture first.");
             return;
         }
 
-<<<<<<< HEAD
         setUploadingPicture(true);
         setError("");
         setMessage("");
@@ -276,32 +209,39 @@ setMessage(response.data.message || "Profile updated successfully.");
         try {
             const uploadData = new FormData();
 
-            uploadData.append("profile_picture", selectedPicture);
+            uploadData.append(
+                "profile_picture",
+                selectedPicture
+            );
+
+            const config = getAuthConfig();
 
             const response = await axios.post(
                 `${API}/profile/picture`,
                 uploadData,
                 {
-                    ...getAuthConfig(),
+                    ...config,
                     headers: {
-                        ...getAuthConfig().headers,
+                        ...config.headers,
                         "Content-Type": "multipart/form-data"
                     }
                 }
             );
 
-            const updatedUser = response.data.user || response.data;
+            const updatedUser =
+                response.data.user || response.data;
 
             setUser((previous) => ({
                 ...previous,
-                ...updatedUser,
-                profile_picture:
-                    updatedUser.profile_picture ||
-                    previous?.profile_picture
+                ...updatedUser
             }));
 
             setSelectedPicture(null);
-            setMessage("Profile picture uploaded successfully.");
+
+            setMessage(
+                response.data.message ||
+                "Profile picture uploaded successfully."
+            );
         } catch (err) {
             setError(
                 err.response?.data?.message ||
@@ -309,52 +249,28 @@ setMessage(response.data.message || "Profile updated successfully.");
             );
         } finally {
             setUploadingPicture(false);
-=======
-        const data = new FormData();
-        data.append("profile_picture", picture);
-
-        setMessage("");
-        setError("");
-
-        try {
-            await axios.post(
-                `${API}/profile/picture`,
-                data,
-                authConfig
-            );
-
-            setPicture(null);
-            setMessage("Profile picture uploaded successfully.");
-            await loadProfile();
-        } catch (err) {
-            setError(
-                err.response?.data?.message ||
-                "Could not upload your picture."
-            );
->>>>>>> a16bb27 (Add user profile page and styling)
         }
     };
 
+    // Loading state
     if (loading) {
-<<<<<<< HEAD
         return (
             <div className="profile-page">
                 <p>Loading your profile...</p>
             </div>
         );
-=======
-        return <div className="profile-page">Loading profile...</div>;
->>>>>>> a16bb27 (Add user profile page and styling)
     }
 
+    // Error state
     if (!user) {
         return (
             <div className="profile-page">
-<<<<<<< HEAD
                 <div className="profile-card">
                     <h2>My Profile</h2>
 
-                    <p className="profile-error">{error}</p>
+                    <p className="profile-error">
+                        {error}
+                    </p>
 
                     <button
                         type="button"
@@ -364,41 +280,47 @@ setMessage(response.data.message || "Profile updated successfully.");
                         Try Again
                     </button>
                 </div>
-=======
-                <h2>My Profile</h2>
-                <p className="profile-error">{error}</p>
-                <button type="button" onClick={loadProfile}>
-                    Try Again
-                </button>
->>>>>>> a16bb27 (Add user profile page and styling)
             </div>
         );
     }
 
-<<<<<<< HEAD
+    // Profile initials
     const initials = (
         `${formData.first_name?.charAt(0) || ""}` +
         `${formData.last_name?.charAt(0) || ""}`
     ).toUpperCase() || "U";
 
+    // Saved profile picture
     const savedPicture = user.profile_picture
-        ? `${SERVER_URL}${user.profile_picture}`
+        ? user.profile_picture.startsWith("http")
+            ? user.profile_picture
+            : `${SERVER_URL}${user.profile_picture}`
         : "";
 
-    const displayedPicture = picturePreview || savedPicture;
+    // Picture displayed on the profile
+    const displayedPicture =
+        picturePreview || savedPicture;
 
     return (
         <div className="profile-page">
+
+            {/* Profile Heading */}
             <div className="profile-heading">
                 <h1>My Profile</h1>
+
                 <p>
                     View and manage your Nation Cabs account details.
                 </p>
             </div>
 
+            {/* Profile Card */}
             <section className="profile-card">
+
+                {/* Profile Picture Section */}
                 <div className="profile-banner">
+
                     <div className="profile-picture-container">
+
                         {displayedPicture ? (
                             <img
                                 src={displayedPicture}
@@ -441,6 +363,7 @@ setMessage(response.data.message || "Profile updated successfully.");
                                     : "Upload Picture"}
                             </button>
                         )}
+
                     </div>
 
                     <div className="profile-banner-details">
@@ -448,21 +371,32 @@ setMessage(response.data.message || "Profile updated successfully.");
                             {formData.first_name || "Your"}{" "}
                             {formData.last_name || "Profile"}
                         </h2>
+
                         <p>{formData.email}</p>
                     </div>
+
                 </div>
 
+                {/* Success Message */}
                 {message && (
-                    <p className="profile-success">{message}</p>
+                    <p className="profile-success">
+                        {message}
+                    </p>
                 )}
 
+                {/* Error Message */}
                 {error && (
-                    <p className="profile-error">{error}</p>
+                    <p className="profile-error">
+                        {error}
+                    </p>
                 )}
 
+                {/* Personal Information Heading */}
                 <div className="profile-section-heading">
+
                     <div>
                         <h3>Personal Information</h3>
+
                         <p>
                             Keep your contact details up to date.
                         </p>
@@ -481,163 +415,71 @@ setMessage(response.data.message || "Profile updated successfully.");
                             Edit Profile
                         </button>
                     )}
+
                 </div>
 
+                {/* Profile Form */}
                 <form onSubmit={handleSave}>
+
                     <div className="profile-form-grid">
+
+                        {/* First Name */}
                         <div className="profile-field">
                             <label htmlFor="first_name">
                                 First Name
                             </label>
+
                             <input
                                 id="first_name"
-=======
-    const pictureUrl = user.profile_picture
-        ? user.profile_picture.startsWith("http")
-            ? user.profile_picture
-            : `http://localhost:5000${user.profile_picture}`
-        : "";
-
-    return (
-        <section className="profile-page">
-            <div className="profile-heading">
-                <div>
-                    <h2>My Profile</h2>
-                    <p>View and manage your account information.</p>
-                </div>
-
-                {!editing && (
-                    <button
-                        type="button"
-                        className="profile-edit-btn"
-                        onClick={() => {
-                            setMessage("");
-                            setError("");
-                            setEditing(true);
-                        }}
-                    >
-                        Edit Profile
-                    </button>
-                )}
-            </div>
-
-            {message && (
-                <p className="profile-success">{message}</p>
-            )}
-
-            {error && (
-                <p className="profile-error">{error}</p>
-            )}
-
-            <div className="profile-card">
-                <div className="profile-picture-section">
-                    {pictureUrl ? (
-                        <img
-                            src={pictureUrl}
-                            alt="Profile"
-                            className="profile-avatar"
-                        />
-                    ) : (
-                        <div className="profile-avatar profile-avatar-placeholder">
-                            {user.first_name?.charAt(0)?.toUpperCase()}
-                        </div>
-                    )}
-
-                    <div>
-                        <h3>
-                            {user.first_name} {user.last_name}
-                        </h3>
-                        <p>{user.email}</p>
-
-                        <form onSubmit={handlePictureUpload}>
-                            <input
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp"
-                                onChange={(e) =>
-                                    setPicture(e.target.files?.[0] || null)
-                                }
-                            />
-
-                            <button
-                                type="submit"
-                                className="profile-save-btn"
-                            >
-                                Upload Picture
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <hr />
-
-                <h3>Personal Information</h3>
-
-                <form onSubmit={handleSave}>
-                    <div className="profile-fields">
-                        <label>
-                            First Name
-                            <input
->>>>>>> a16bb27 (Add user profile page and styling)
                                 name="first_name"
+                                type="text"
                                 value={formData.first_name}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
-<<<<<<< HEAD
                         </div>
 
+                        {/* Last Name */}
                         <div className="profile-field">
                             <label htmlFor="last_name">
                                 Last Name
                             </label>
+
                             <input
                                 id="last_name"
-=======
-                        </label>
-
-                        <label>
-                            Last Name
-                            <input
->>>>>>> a16bb27 (Add user profile page and styling)
                                 name="last_name"
+                                type="text"
                                 value={formData.last_name}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
-<<<<<<< HEAD
                         </div>
 
+                        {/* Email */}
                         <div className="profile-field">
                             <label htmlFor="email">
                                 Email Address
                             </label>
+
                             <input
                                 id="email"
                                 name="email"
                                 type="email"
-=======
-                        </label>
-
-                        <label>
-                            Email Address
-                            <input
-                                type="email"
-                                name="email"
->>>>>>> a16bb27 (Add user profile page and styling)
                                 value={formData.email}
                                 onChange={handleChange}
                                 disabled={!editing}
                                 required
                             />
-<<<<<<< HEAD
                         </div>
 
+                        {/* Phone */}
                         <div className="profile-field">
                             <label htmlFor="phone">
                                 Phone Number
                             </label>
+
                             <input
                                 id="phone"
                                 name="phone"
@@ -648,32 +490,28 @@ setMessage(response.data.message || "Profile updated successfully.");
                                 placeholder="Enter your phone number"
                             />
                         </div>
-=======
-                        </label>
 
-                        <label>
-                            Phone Number
-                            <input
-                                type="tel"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                disabled={!editing}
-                                required
-                            />
-                        </label>
+                        {/* Account Type */}
+                        <div className="profile-field">
+                            <label htmlFor="account-type">
+                                Account Type
+                            </label>
 
-                        <label>
-                            Account Type
                             <input
+                                id="account-type"
                                 value={user.role || "customer"}
                                 disabled
                             />
-                        </label>
+                        </div>
 
-                        <label>
-                            Email Verification
+                        {/* Email Verification */}
+                        <div className="profile-field">
+                            <label htmlFor="email-verification">
+                                Email Verification
+                            </label>
+
                             <input
+                                id="email-verification"
                                 value={
                                     Number(user.is_verified) === 1
                                         ? "Verified"
@@ -681,63 +519,42 @@ setMessage(response.data.message || "Profile updated successfully.");
                                 }
                                 disabled
                             />
-                        </label>
->>>>>>> a16bb27 (Add user profile page and styling)
+                        </div>
+
                     </div>
 
+                    {/* Save and Cancel Buttons */}
                     {editing && (
                         <div className="profile-actions">
+
                             <button
                                 type="submit"
                                 className="profile-save-btn"
-<<<<<<< HEAD
                                 disabled={saving}
                             >
                                 {saving
                                     ? "Saving..."
                                     : "Save Changes"}
-=======
-                            >
-                                Save Changes
->>>>>>> a16bb27 (Add user profile page and styling)
                             </button>
 
                             <button
                                 type="button"
                                 className="profile-cancel-btn"
-<<<<<<< HEAD
                                 onClick={handleCancel}
                                 disabled={saving}
-=======
-                                onClick={() => {
-                                    setFormData({
-                                        first_name: user.first_name || "",
-                                        last_name: user.last_name || "",
-                                        email: user.email || "",
-                                        phone: user.phone || ""
-                                    });
-                                    setEditing(false);
-                                    setError("");
-                                }}
->>>>>>> a16bb27 (Add user profile page and styling)
                             >
                                 Cancel
                             </button>
+
                         </div>
                     )}
+
                 </form>
-<<<<<<< HEAD
+
             </section>
+
         </div>
-=======
-            </div>
-        </section>
->>>>>>> a16bb27 (Add user profile page and styling)
     );
 }
 
 export default UserProfile;
-<<<<<<< HEAD
- 
-=======
->>>>>>> a16bb27 (Add user profile page and styling)
