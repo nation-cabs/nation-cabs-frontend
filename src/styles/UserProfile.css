@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+
+
 .profile-page {
     width: 100%;
     min-height: 100%;
@@ -8,13 +9,18 @@
 }
 
 .profile-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
     margin-bottom: 24px;
 }
 
-.profile-heading h1 {
+.profile-heading h1,
+.profile-heading h2 {
     margin: 0 0 8px;
-    font-size: 28px;
     color: #0b1f3a;
+    font-size: 28px;
 }
 
 .profile-heading p,
@@ -58,6 +64,16 @@
     font-weight: 700;
 }
 
+.profile-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #7d0606;
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 700;
+}
+
 .profile-banner h2 {
     margin: 0 0 6px;
     color: #0b1f3a;
@@ -71,22 +87,6 @@
 }
 
 .profile-section-heading {
-=======
-
-.profile-page {
-    width: 100%;
-    padding: 28px;
-    color: #243247;
-    box-sizing: border-box;
-}
-
-.profile-heading {
->>>>>>> a16bb27 (Add user profile page and styling)
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-<<<<<<< HEAD
     padding: 25px 28px 10px;
 }
 
@@ -96,7 +96,8 @@
     font-size: 18px;
 }
 
-.profile-form-grid {
+.profile-form-grid,
+.profile-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
@@ -110,13 +111,21 @@
     min-width: 0;
 }
 
-.profile-field label {
+.profile-field label,
+.profile-fields label {
     color: #334155;
     font-size: 14px;
     font-weight: 600;
 }
 
-.profile-field input {
+.profile-fields label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-field input,
+.profile-fields input {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
@@ -129,32 +138,17 @@
     outline: none;
 }
 
-.profile-field input:focus {
+.profile-field input:focus,
+.profile-fields input:focus {
     border-color: #7d0606;
     box-shadow: 0 0 0 3px rgba(125, 6, 6, 0.1);
 }
 
-.profile-field input:disabled {
-=======
-    margin-bottom: 24px;
-}
-
-.profile-heading h2 {
-    margin: 0 0 8px;
-    font-size: 26px;
-}
-
-.profile-heading p {
-    margin: 0;
-    color: #64748b;
-}
-
-.profile-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 28px;
-    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+.profile-field input:disabled,
+.profile-fields input:disabled {
+    background: #f8fafc;
+    color: #475569;
+    cursor: default;
 }
 
 .profile-picture-section {
@@ -169,33 +163,21 @@
 }
 
 .profile-picture-section p {
-    color: #64748b;
     margin: 0 0 12px;
+    color: #64748b;
 }
 
-.profile-avatar {
+.profile-picture-section .profile-avatar {
     width: 110px;
     height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
     border: 3px solid #f1d5d5;
-    flex-shrink: 0;
-}
-
-.profile-avatar-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #7d0606;
-    color: white;
-    font-size: 38px;
-    font-weight: 700;
+    object-fit: cover;
 }
 
 .profile-card hr {
+    margin: 24px 0;
     border: 0;
     border-top: 1px solid #e2e8f0;
-    margin: 24px 0;
 }
 
 .profile-card > form > h3,
@@ -203,40 +185,6 @@
     margin-top: 0;
 }
 
-.profile-fields {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-}
-
-.profile-fields label {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.profile-fields input {
-    width: 100%;
-    min-width: 0;
-    padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 7px;
-    box-sizing: border-box;
-    font-size: 14px;
-    color: #243247;
-    background: #ffffff;
-}
-
-.profile-fields input:disabled {
->>>>>>> a16bb27 (Add user profile page and styling)
-    background: #f8fafc;
-    color: #475569;
-    cursor: default;
-}
-
-<<<<<<< HEAD
 .profile-actions {
     display: flex;
     justify-content: flex-end;
@@ -248,9 +196,10 @@
 .profile-save-btn,
 .profile-edit-btn,
 .profile-cancel-btn {
+    margin-top: 10px;
     padding: 11px 18px;
     border: none;
-    border-radius: 6px;
+    border-radius: 7px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -259,39 +208,17 @@
 
 .profile-save-btn,
 .profile-edit-btn {
-=======
-.profile-edit-btn,
-.profile-save-btn,
-.profile-cancel-btn {
-    padding: 11px 18px;
-    border: none;
-    border-radius: 7px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.profile-edit-btn,
-.profile-save-btn {
->>>>>>> a16bb27 (Add user profile page and styling)
     background: #7d0606;
     color: #ffffff;
 }
 
-<<<<<<< HEAD
 .profile-save-btn:hover,
 .profile-edit-btn:hover {
-    background: #5f0404;
-=======
-.profile-edit-btn:hover,
-.profile-save-btn:hover {
     background: #5e0404;
->>>>>>> a16bb27 (Add user profile page and styling)
 }
 
 .profile-cancel-btn {
     background: #e2e8f0;
-<<<<<<< HEAD
     color: #334155;
 }
 
@@ -309,7 +236,7 @@
 .profile-error {
     margin: 18px 28px 0;
     padding: 12px 14px;
-    border-radius: 6px;
+    border-radius: 7px;
     font-size: 14px;
 }
 
@@ -323,38 +250,16 @@
     color: #991b1b;
 }
 
-@media (max-width: 600px) {
-=======
-    color: #243247;
-}
-
-.profile-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.profile-success {
-    color: #166534;
-    background: #dcfce7;
-    padding: 12px;
-    border-radius: 7px;
-}
-
-.profile-error {
-    color: #991b1b;
-    background: #fee2e2;
-    padding: 12px;
-    border-radius: 7px;
-}
-
 @media (max-width: 650px) {
->>>>>>> a16bb27 (Add user profile page and styling)
     .profile-page {
         padding: 16px;
     }
 
-<<<<<<< HEAD
+    .profile-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
     .profile-banner {
         padding: 20px;
         gap: 12px;
@@ -367,12 +272,11 @@
     }
 
     .profile-section-heading {
-        align-items: flex-start;
-        flex-direction: column;
         padding: 22px 20px 8px;
     }
 
-    .profile-form-grid {
+    .profile-form-grid,
+    .profile-fields {
         grid-template-columns: 1fr;
         padding: 18px 20px 24px;
     }
@@ -386,24 +290,10 @@
         margin-left: 20px;
         margin-right: 20px;
     }
-}
-=======
-    .profile-card {
-        padding: 18px;
-    }
-
-    .profile-fields {
-        grid-template-columns: 1fr;
-    }
 
     .profile-picture-section {
         align-items: flex-start;
         flex-direction: column;
     }
-
-    .profile-heading {
-        align-items: flex-start;
-        flex-direction: column;
-    }
 }
->>>>>>> a16bb27 (Add user profile page and styling)
+
