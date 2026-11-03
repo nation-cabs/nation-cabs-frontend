@@ -23,6 +23,7 @@ function AdminDashboard() {
     const [selectedDrivers, setSelectedDrivers] = useState({});
     const [loading, setLoading] = useState(true);
     const [assigningId, setAssigningId] = useState(null);
+    const [confirmingId, setConfirmingId] = useState(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -62,6 +63,23 @@ function AdminDashboard() {
         `${driver.first_name || ""} ${driver.last_name || ""}`.trim() ||
         driver.email ||
         "Unnamed driver";
+
+        const customerFirstName = (booking) =>
+            booking.customer_first_name ||
+            booking.first_name ||
+            booking.user_first_name ||
+            booking.customer?.first_name ||
+            booking.user?.first_name ||
+            "N/A";
+
+        const customerSurname = (booking) =>
+            booking.customer_surname ||
+            booking.customer_last_name ||
+            booking.last_name ||
+            booking.user_last_name ||
+            booking.customer?.last_name ||
+            booking.user?.last_name ||
+            "N/A";
 
     const formatDate = (value) => {
         if (!value) return "Not scheduled";
@@ -167,6 +185,61 @@ function AdminDashboard() {
         }
     };
 
+    const handleConfirmRide = async (booking) => {
+    const bookingId = booking.id;
+    const status = String(
+        booking.booking_status || "pending"
+    ).trim().toLowerCase();
+
+    if (status !== "pending") {
+        setError("Only pending bookings can be confirmed.");
+        return;
+    }
+
+    const confirmed = window.confirm(
+        "Are you sure you want to confirm this booking?"
+    );
+
+    if (!confirmed) return;
+
+    setConfirmingId(bookingId);
+    setError("");
+    setSuccess("");
+
+    try {
+        const response = await axiosInstance.patch(
+            `/admin/bookings/${encodeURIComponent(bookingId)}/confirm`
+        );
+
+        const updatedBooking = response.data?.booking;
+
+        setBookings((previous) =>
+            previous.map((item) =>
+                String(item.id) === String(bookingId)
+                    ? {
+                          ...item,
+                          ...(updatedBooking || {}),
+                          booking_status:
+                              updatedBooking?.booking_status ||
+                              "Confirmed",
+                      }
+                    : item
+            )
+        );
+
+        setSuccess("Booking confirmed successfully.");
+    } catch (err) {
+        console.error("Booking confirmation error:", err);
+
+        setError(
+            err.response?.data?.message ||
+            "Could not confirm this booking. Please try again."
+        );
+    } finally {
+        setConfirmingId(null);
+    }
+};
+
     const handleLogout = () => {
         const confirmed = window.confirm(
             "Are you sure you want to logout?"
@@ -190,67 +263,114 @@ function AdminDashboard() {
             String(booking.booking_status || "").toLowerCase() === "completed"
     ).length;
 
-    const renderBookingsTable = (items) => (
-        <div className="admin-table-scroll">
-            <table className="admin-bookings-table">
-                <thead>
-                    <tr>
-                        <th>Booking</th>
-                        <th>Pickup Date & Time</th>
-                        <th>Status</th>
-                        <th>Approved Driver</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+    const renderBookingsTable = (items, showConfirmButton = false) => (
+    <div className="admin-table-scroll">
+        <table className="admin-bookings-table">
 
-                <tbody>
-                    {items.map((booking) => {
-                        const currentSelection =
-                            selectedDrivers[booking.id] ??
-                            booking.driver_id ??
-                            "";
+            <colgroup>
+                <col style={{ width: "12%" }} />
+                <col style={{ width: "13%" }} />
+                <col style={{ width: "20%" }} />
+                <col style={{ width: "17%" }} />
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "16%" }} />
+                <col style={{ width: "12%" }} />
+            </colgroup>
 
-                        const alreadyAssigned =
-                            Boolean(booking.driver_id) &&
-                            String(currentSelection) ===
-                                String(booking.driver_id);
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Customer Surname</th>
+                    <th>Booking</th>
+                    <th>Pickup Date & Time</th>
+                    <th>Status</th>
+                    <th>Approved Driver</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-                        const currentDriverInList = drivers.some(
-                            (driver) =>
-                                String(driver.id) ===
-                                String(booking.driver_id)
-                        );
+            <tbody>
+                {items.map((booking) => {
 
-                        return (
-                            <tr key={booking.id}>
-                                <td>
-                                    <div className="admin-booking-route">
-                                        <strong>
-                                            {booking.pickup_location || "N/A"}
-                                        </strong>
-                                        <span className="route-arrow">↓</span>
-                                        <span>
-                                            {booking.dropoff_location || "N/A"}
-                                        </span>
-                                        <small>
-                                            {booking.vehicle_type || "Vehicle not specified"}
-                                        </small>
-                                    </div>
-                                </td>
+                    const currentSelection =
+                        selectedDrivers[booking.id] ??
+                        booking.driver_id ??
+                        "";
 
-                                <td>{formatDate(booking.pickup_datetime)}</td>
+                    const alreadyAssigned =
+                        Boolean(booking.driver_id) &&
+                        String(currentSelection) ===
+                        String(booking.driver_id);
 
-                                <td>
-                                    <span
-                                        className={`admin-status-badge ${statusClass(
-                                            booking.booking_status
-                                        )}`}
-                                    >
-                                        {booking.booking_status || "Pending"}
+                    const currentDriverInList = drivers.some(
+                        (driver) =>
+                            String(driver.id) ===
+                            String(booking.driver_id)
+                    );
+
+                    const isPendingBooking =
+                        String(booking.booking_status || "pending")
+                            .trim()
+                            .toLowerCase() === "pending";
+
+                    const isConfirmedBooking =
+                        String(booking.booking_status || "")
+                            .trim()
+                            .toLowerCase() === "confirmed";
+
+
+                    return (
+                        <tr key={booking.id}>
+
+                            {/* Customer Name */}
+                            <td>
+                                {customerFirstName(booking)}
+                            </td>
+
+                            {/* Customer Surname */}
+                            <td>
+                                {customerSurname(booking)}
+                            </td>
+
+                            {/* Pickup and Drop-off */}
+                            <td>
+                                <div className="admin-booking-route">
+                                    <strong>
+                                        {booking.pickup_location || "N/A"}
+                                    </strong>
+
+                                    <span className="route-arrow">↓</span>
+
+                                    <span>
+                                        {booking.dropoff_location || "N/A"}
                                     </span>
-                                </td>
 
-                                <td>
+                                    <small>
+                                        {booking.vehicle_type || "Not specified"}
+                                    </small>
+                                </div>
+                            </td>
+
+                            {/* Pickup Date */}
+                            <td>
+                                {formatDate(booking.pickup_datetime)}
+                            </td>
+
+                            {/* Booking Status */}
+                            <td>
+                                <span
+                                    className={`admin-status-badge ${statusClass(
+                                        booking.booking_status
+                                    )}`}
+                                >
+                                    {booking.booking_status || "Pending"}
+                                </span>
+                            </td>
+
+                            {/* Approved Driver */}
+                            
+                            <td>
+                                
                                     <select
                                         className="admin-driver-dropdown"
                                         value={currentSelection}
@@ -261,7 +381,7 @@ function AdminDashboard() {
                                             )
                                         }
                                         disabled={assigningId === booking.id}
-                                        aria-label={`Select approved driver for booking ${booking.id}`}
+                                        aria-label="Select approved driver"
                                     >
                                         <option value="">
                                             Select approved driver
@@ -270,7 +390,7 @@ function AdminDashboard() {
                                         {booking.driver_id &&
                                             !currentDriverInList && (
                                                 <option value={booking.driver_id}>
-                                                    Current driver (not in approved list)
+                                                    Current driver
                                                 </option>
                                             )}
 
@@ -280,51 +400,73 @@ function AdminDashboard() {
                                                 value={driver.id}
                                             >
                                                 {driverName(driver)}
-                                                {driver.email
-                                                    ? ` — ${driver.email}`
-                                                    : ""}
                                             </option>
                                         ))}
                                     </select>
-                                </td>
+                                
+                            </td>
+                            
+                            {/* Actions */}
+                            <td className="admin-booking-actions">
 
-                                <td>
-                                    <button
-                                        type="button"
-                                        className="admin-assign-button"
-                                        disabled={
-                                            !currentSelection ||
-                                            alreadyAssigned ||
-                                            assigningId === booking.id
-                                        }
-                                        onClick={() =>
-                                            handleAssignDriver(booking)
-                                        }
-                                    >
-                                        {assigningId === booking.id
-                                            ? "Assigning..."
-                                            : alreadyAssigned
-                                            ? "Assigned"
-                                            : booking.driver_id
-                                            ? "Reassign Driver"
-                                            : "Assign Driver"}
-                                    </button>
-                                </td>
-                            </tr>
-                        );
-                    })}
+                                {showConfirmButton &&
+                                    isPendingBooking && (
+                                        <button
+                                            type="button"
+                                            className="admin-confirm-button"
+                                            disabled={
+                                                confirmingId === booking.id
+                                            }
+                                            onClick={() =>
+                                                handleConfirmRide(booking)
+                                            }
+                                        >
+                                            {confirmingId === booking.id
+                                                ? "Confirming..."
+                                                : "Confirm Booking"}
+                                        </button>
+                                    )}
 
-                    {items.length === 0 && (
-                        <tr>
-                            <td colSpan="5" className="admin-empty-state">
-                                No bookings found.
+                                <button
+                                    type="button"
+                                    className="admin-assign-button"
+                                    disabled={
+                                        !isConfirmedBooking ||
+                                        !currentSelection ||
+                                        alreadyAssigned ||
+                                        assigningId === booking.id
+                                       
+                                    }
+                                    onClick={() =>
+                                        handleAssignDriver(booking)
+                                    }
+                                >
+                                    {assigningId === booking.id
+                                        ? "Assigning..."
+                                        : alreadyAssigned
+                                        ? "Assigned"
+                                        : booking.driver_id
+                                        ? "Reassign Driver"
+                                        : "Assign Driver"}
+                                </button>
+
                             </td>
                         </tr>
-                    )}
-                </tbody>
-            </table>
-        </div>
-    );
+                    );
+                })}
+
+                {items.length === 0 && (
+                    <tr>
+                        <td colSpan="7" className="admin-empty-state">
+                            No bookings found.
+                        </td>
+                    </tr>
+                )}
+            </tbody>
+
+        </table>
+    </div>
+);
 
     return (
         <div className="admin-dashboard">
@@ -506,7 +648,7 @@ function AdminDashboard() {
                                     </div>
                                 )}
 
-                                {renderBookingsTable(bookings)}
+                                {renderBookingsTable(bookings, true)}
                             </section>
                         )}
 
