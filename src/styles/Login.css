@@ -96,3 +96,36 @@ body{
 
 }
 
+.forgot-password {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.forgot-password a {
+    color: #0d23a1;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.success-message {
+    color: #16803c;
+    background: #e8f5ec;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: #d00000;
+    background: #ffeaea;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
