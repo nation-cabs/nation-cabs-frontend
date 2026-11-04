@@ -1,10 +1,10 @@
-
 import axios from "axios";
 
-const API = import.meta.env.VITE_API || "http://localhost:5000/api";
+const API = import.meta.env.VITE_API;
 
 // Register
 export const signupUser = async (userData) => {
+
     const response = await axios.post(
         `${API}/auth/signup`,
         userData
@@ -15,23 +15,38 @@ export const signupUser = async (userData) => {
 
 // Login
 export const loginUser = async (credentials) => {
+
     const response = await axios.post(
         `${API}/auth/login`,
         credentials
     );
 
-    // Save the token returned by the backend
-    if (response.data.token) {
-        localStorage.setItem("userToken", response.data.token);
-    }
+    return response.data;
+};
 
-    // Save user details
-    if (response.data.user) {
-        localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.user)
-        );
-    }
+// Forgot Password
+export const forgotPassword = async (email) => {
+    const response = await axios.post(
+        `${API}/auth/forgot-password`,
+        { email }
+    );
+
+    return response.data;
+};
+
+// Reset Password
+export const resetPassword = async (
+    token,
+    password,
+    confirmPassword
+) => {
+    const response = await axios.post(
+        `${API}/auth/reset-password/${token}`,
+        {
+            password,
+            confirmPassword
+        }
+    );
 
     return response.data;
 };
