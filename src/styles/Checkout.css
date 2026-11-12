@@ -1,0 +1,147 @@
+
+.checkout-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    background: #f4f6f9;
+}
+
+.checkout-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+.checkout-card h1 {
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 28px;
+}
+
+.checkout-subtitle {
+    color: #777;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.booking-reference {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px;
+    margin-bottom: 25px;
+    background: #f4f6f9;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+}
+
+.booking-reference span,
+.payment-method span {
+    color: #777;
+    font-size: 13px;
+}
+
+.booking-reference strong {
+    color: #222;
+    font-size: 16px;
+}
+
+.payment-information {
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.payment-information h3 {
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.payment-information p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.payment-method {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.payment-method strong {
+    color: #222;
+    font-size: 14px;
+    text-align: right;
+}
+
+.pay-button,
+.back-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 18px;
+    transition: 0.2s ease;
+}
+
+.pay-button {
+    background: #176b45;
+    color: white;
+}
+
+.pay-button:hover {
+    background: #105536;
+}
+
+.back-button {
+    background: #edf0f3;
+    color: #333;
+}
+
+.back-button:hover {
+    background: #dfe3e8;
+}
+
+.pay-button:disabled,
+.back-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.checkout-error {
+    padding: 12px;
+    margin-top: 18px;
+    background: #fff0f0;
+    color: #c62828;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.secure-payment {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+@media (max-width: 480px) {
+    .checkout-card {
+        padding: 24px 18px;
+    }
+
+    .checkout-card h1 {
+        font-size: 24px;
+    }
+}
