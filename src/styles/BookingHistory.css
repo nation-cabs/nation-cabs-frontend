@@ -1,5 +1,4 @@
 
-
 .history {
     width: 100%;
     padding: 24px;
@@ -18,15 +17,11 @@
     color: #666;
 }
 
-/* Table container */
 .history-table-wrapper {
     width: 100%;
-    max-width: 100%;
-    margin-top: 15px;
-    box-sizing: border-box;
     overflow-x: auto;
-    border: 1px solid #e0e0e0;
     border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
 .history-table {
@@ -41,7 +36,6 @@
     padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid #e8e8e8;
-    vertical-align: middle;
 }
 
 .history-table th {
@@ -59,53 +53,37 @@
     border-bottom: none;
 }
 
-/* Default status badge */
 .history-status {
     display: inline-block;
     padding: 6px 10px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     white-space: nowrap;
-    text-transform: capitalize;
-    border: 1px solid transparent;
+    background: #eee;
+    color: #444;
 }
 
-/* Cancelled and rejected — red */
-.history-status.cancelled,
-.history-status.canceled,
-.history-status.rejected {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border-color: #ef4444;
+.status-completed {
+    background: #d9f2e3;
+    color: #17663a;
 }
 
-/* Completed — green */
-.history-status.completed {
-    background-color: #dcfce7;
-    color: #15803d;
-    border-color: #22c55e;
+.status-cancelled,
+.status-canceled,
+.status-rejected {
+    background: #fde2e2;
+    color: #a32121;
 }
 
-/* Pending — blue */
-.history-status.pending {
-    background-color: #dbeafe;
-    color: #1d4ed8;
-    border-color: #3b82f6;
+.status-pending {
+    background: #fff0c2;
+    color: #805c00;
 }
 
-/* Driver assigned — amber */
-.history-status.driver-assigned {
-    background-color: #fef3c7;
-    color: #92400e;
-    border-color: #f59e0b;
-}
-
-/* Other statuses — grey */
-.history-status:not(.cancelled):not(.canceled):not(.rejected):not(.completed):not(.pending):not(.driver-assigned) {
-    background-color: #f3f4f6;
-    color: #374151;
-    border-color: #d1d5db;
+.status-driver-assigned {
+    background: #dceafe;
+    color: #174ea6;
 }
 
 .history-message {
@@ -122,20 +100,6 @@
     color: #a32121;
 }
 
-.booking-error {
-    padding: 14px;
-    border-radius: 8px;
-    background: #fde2e2;
-    color: #a32121;
-}
-
-.history-empty {
-    padding: 20px;
-    background: #f5f7fa;
-    border-radius: 8px;
-    color: #555;
-}
-
 @media (max-width: 768px) {
     .history {
         padding: 16px;
@@ -148,5 +112,162 @@
     .history-table th,
     .history-table td {
         padding: 11px 12px;
+    }
+}
+
+
+.booking-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.history-booking-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.history-booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.history-booking-header h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+}
+
+.history-booking-header p {
+    color: #6b7280;
+    font-size: 13px;
+    margin: 0;
+}
+
+.booking-status {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.history-trip-details,
+.history-driver-details {
+    padding: 18px 0;
+}
+
+.history-trip-details h4,
+.history-driver-details h4 {
+    font-size: 15px;
+    margin: 0 0 16px;
+    color: #222;
+}
+
+.history-route {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.history-route-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.route-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.pickup-dot {
+    background: #16a34a;
+}
+
+.dropoff-dot {
+    background: #dc2626;
+}
+
+.history-route-item small,
+.history-info-grid small,
+.history-instructions small {
+    display: block;
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.history-route-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #222;
+    overflow-wrap: anywhere;
+}
+
+.history-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.history-info-grid strong {
+    display: block;
+    font-size: 14px;
+    color: #222;
+    overflow-wrap: anywhere;
+}
+
+.history-total {
+    color: #15803d !important;
+    font-size: 17px !important;
+}
+
+.history-driver-details {
+    border-top: 1px solid #eee;
+}
+
+.no-driver-message {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.history-instructions {
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+}
+
+.history-instructions p {
+    font-size: 13px;
+    color: #444;
+    margin: 5px 0 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .history-booking-card {
+        padding: 16px;
+    }
+
+    .history-booking-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .history-info-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 }
