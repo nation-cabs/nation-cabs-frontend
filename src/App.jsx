@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserDashboard from "./pages/UserDashboard.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import ForgotPassword from "./pages/ForgotPassword";
 
 import RoleProtectedRoute from "./components/RoleProtectedRoute.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
@@ -29,6 +30,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/forgot-password" element={<ForgotPassword />}
+/>
        
        
         <Route path="/unauthorized" element={<Unauthorized />} />
@@ -47,6 +50,11 @@ function App() {
             <Route path="/payment/cancel" element={<PaymentCancel />} />
       </Routes>
     
+
+  )
+}
+
+export default App;
 
   )
 }
