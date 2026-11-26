@@ -1,22 +1,18 @@
 
 import { useState } from "react";
+
 import DashboardSidebar from "../components/DashboardSidebar";
 import DashboardHeader from "../components/DashboardHeader";
 import DashboardCards from "../components/DashboardCards";
 import BookingForm from "../components/BookingForm";
 import UpcomingBooking from "../components/UpcomingBooking";
 import BookingHistory from "../components/BookingHistory";
-<<<<<<< HEAD
-import UserProfile from "../components/UserProfile.jsx";
-=======
 import UserProfile from "../components/UserProfile";
->>>>>>> 3e34dd9 (Update dashboard, booking and authentication)
-import "../styles/UserDashboard.css";
 
+import "../styles/UserDashboard.css";
 
 function UserDashboard() {
     const [bookingRefreshKey, setBookingRefreshKey] = useState(0);
-    
     const [activeSection, setActiveSection] = useState("overview");
 
     const handleBookingCreated = () => {
@@ -33,6 +29,7 @@ function UserDashboard() {
             <div className="dashboard-content">
                 <DashboardHeader />
 
+                {/* Dashboard Overview */}
                 {activeSection === "overview" && (
                     <>
                         <DashboardCards />
@@ -53,36 +50,31 @@ function UserDashboard() {
                     </>
                 )}
 
- {activeSection === "book" && (
-                <BookingForm
-                                onBookingCreated={handleBookingCreated}
-                            />    
-                   
+                {/* Book a Ride */}
+                {activeSection === "book" && (
+                    <BookingForm
+                        onBookingCreated={handleBookingCreated}
+                    />
                 )}
 
-                  
-
-
+                {/* Upcoming Bookings */}
                 {activeSection === "bookings" && (
-                    
                     <UpcomingBooking
                         refreshKey={bookingRefreshKey}
                     />
                 )}
 
+                {/* Booking History */}
                 {activeSection === "history" && (
                     <BookingHistory
                         refreshKey={bookingRefreshKey}
                     />
-                    
                 )}
-<<<<<<< HEAD
+
+                {/* User Profile */}
                 {activeSection === "profile" && (
-    <UserProfile />
-)}
-=======
-                {activeSection === "profile" && <UserProfile />}
->>>>>>> 3e34dd9 (Update dashboard, booking and authentication)
+                    <UserProfile />
+                )}
             </div>
         </div>
     );
