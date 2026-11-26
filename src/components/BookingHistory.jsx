@@ -333,4 +333,3 @@ function BookingHistory({ refreshKey = 0 }) {
 }
 
 export default BookingHistory;
-
